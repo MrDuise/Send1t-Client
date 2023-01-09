@@ -1,12 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import ConversationCard from './src/features/conversation-log/components/conversation-card'
+import React from 'react'
+import {theme} from './src/infrastructure/theme'
+import  ConversationsLog  from './src/features/conversation-log/screens/conversation-log.screen';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <>
+    <SafeAreaView style={styles.container}>
+      
+      <ConversationsLog />
       <StatusBar style="auto" />
-    </View>
+   
+    </SafeAreaView>
+    </>
   );
 }
 
@@ -14,7 +22,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
   },
 });
