@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native'
+import { StatusBar } from 'expo-status-bar';
 import { Button } from 'react-native-paper';
 import React from 'react'
 import Logo from '../../../components/Logo';
@@ -11,13 +12,13 @@ import { theme } from '../../../infrastructure/theme';
  */
 const WelcomePage = ({login, register}) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Logo />
       <Text style={styles.title}>Welcome to Send1t</Text>
       <Button mode='contained' onPress={() => register} style={styles.box}>Sign Up</Button>
       <Button mode='contained' onPress={() => login} style={styles.box}>Log In</Button>
 
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -26,9 +27,10 @@ export default WelcomePage
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.bg.primary,
+    backgroundColor: theme.colors.colorTheme.purple,
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
  
   title: {
