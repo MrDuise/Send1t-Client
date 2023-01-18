@@ -3,6 +3,7 @@ import React from 'react';
 
 import { theme } from '../../../infrastructure/theme';
 import { Card, Text, Avatar } from 'react-native-paper';
+import AvatarIcon from '../../../components/Avatar'
 /**
  * Takes a conversation and displays it in a card format with the contacts name and the most recent message sent
  * Also displays the time the conversation was updated
@@ -33,7 +34,7 @@ const ConversationCard = ({ conversation = {} }) => {
       style={styles.card}
       title={title}
       subtitle={dateUpdated}
-      left={(props) => <Avatar.Text {...props} size={32} label={title[0]} />}
+      left={(props) => <AvatarIcon />}
       right={(props) => <Text {...props}>{messages[1]}</Text>}
     />
   );
