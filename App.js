@@ -10,7 +10,7 @@ import WelcomePage from './src/features/welcome page/screens/welcome-page.screen
 import Login from './src/features/login/screens/login.screen';
 
 export default function App() {
-  const [signedIn, setSignedIn] = useState(true);
+  const [signedIn, setSignedIn] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>

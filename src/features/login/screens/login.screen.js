@@ -26,10 +26,10 @@ const Login = () => {
           left={<TextInput.Icon icon="lock" />}
         />
       
-        <Button mode="contained" style={styles.textInput}>
+        <Button mode="contained" style={styles.buttonLogin}>
           Login
         </Button>
-        <Button mode="contained" style={styles.textInput}>
+        <Button mode="contained" style={styles.registerButton}>
           Register
         </Button>
 
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 50,
+    marginBottom: 25,
   },
   muted: {
     fontSize: 20,
@@ -63,6 +63,14 @@ const styles = StyleSheet.create({
   textInput: {
     width: 300,
     marginBottom: 20,
+  },
+
+  buttonLogin: {
+    width: 250,
+    marginBottom: 20,
+  },
+  registerButton: {
+    width: 200,
   }
 
 })

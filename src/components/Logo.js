@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
     logo: {
         textAlignVertical: 'center',
         textAlign: 'center',
-        width: theme.sizes[4],
-        height: theme.sizes[4],
+        width: theme.sizes[5],
+        height: theme.sizes[5],
         borderColor: theme.colors.ui.primary,
         borderWidth: 1,
     
         backgroundColor: theme.colors.ui.secondary,
         borderRadius: 100,
-        marginBottom: 50,
+        marginBottom: 25,
       }
 })
