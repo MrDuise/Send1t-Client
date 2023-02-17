@@ -10,13 +10,13 @@ import { theme } from '../../../infrastructure/theme';
  * @param {*} {login, register}
  * @return {*} 
  */
-const WelcomePage = ({login, register}) => {
+const WelcomePage = ({login, register, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Logo />
       <Text style={styles.title}>Welcome to Send1t</Text>
-      <Button mode='contained' onPress={() => register} style={styles.box}>Sign Up</Button>
-      <Button mode='contained' onPress={() => login} style={styles.box}>Log In</Button>
+      <Button mode='contained' onPress={() => navigation.navigate('Register')} style={styles.box}>Sign Up</Button>
+      <Button mode='contained' onPress={() => navigation.navigate('Login')} style={styles.box}>Log In</Button>
 
     </SafeAreaView>
   )
