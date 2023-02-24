@@ -7,7 +7,7 @@ import rightMessages from './rightMessages'
  *
  * @return {*} 
  */
-const messagesLog = ({messages, signedInUser}) => {
+const MessagesLog = ({messages, signedInUser}) => {
   return (
     <View>
       {messages.map((message) => {
@@ -26,6 +26,6 @@ const messagesLog = ({messages, signedInUser}) => {
   )
 }
 
-export default messagesLog
+export default MessagesLog
 
 const styles = StyleSheet.create({})

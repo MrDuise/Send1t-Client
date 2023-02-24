@@ -33,8 +33,23 @@ const googleLogin = () => {};
  */
 const getStatus = () => {};
 
+const logOut = async () => {
+  try {
+    const response = fetch(`http://localhost:8000/v1/users/logout`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   login,
   googleLogin,
   getStatus,
+  logOut,
 };
