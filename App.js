@@ -14,6 +14,8 @@ import Login from './src/features/login/screens/login.screen';
 import EditProfile from './src/features/editProfile/screens/EditProfile';
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [signedIn, setSignedIn] = useState(false);
@@ -22,7 +24,8 @@ export default function App() {
     <NavigationContainer>
     <SafeAreaView style={styles.container}>
       
-      
+      //current navigation stack does not work for nested calls
+      //https://reactnavigation.org/docs/nesting-navigators/#navigating-to-a-screen-in-a-nested-navigator
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={WelcomePage} />
         <Stack.Screen name="Login" component={Login} />

@@ -15,8 +15,8 @@ const login = async (userName, password) => {
     });
     const data = await response.json();
     if (data) {
-      const { token } = data.token;
-      return token;
+      const  user  = data.userName;
+      return user;
     } else {
       console.log(data);
       return null;

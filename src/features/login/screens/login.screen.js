@@ -19,14 +19,17 @@ const Login = ({ navigation }) => {
   //if the login is successful, it will navigate to the ConversationsLog screen
   const handleLogin = async () => {
     setLoading(true);
+    console.log(username, password)
     try {
-      const response = await login(username, password);
-      const data = await response.json();
+      const user = await login(username, password);
+     
 
-      if (data !== null) {
+      if (user !== null) {
         navigation.navigate('ConversationLog');
       } else {
         alert('Invalid username or password');
+        setUsername('');
+        setPassword('');
       }
     } catch (error) {
       alert('An error occurred');
@@ -46,6 +49,7 @@ const Login = ({ navigation }) => {
         mode="outlined"
         value={username}
         style={styles.textInput}
+        onChangeText={(text) => setUsername(text)}
         left={<TextInput.Icon icon="account" />}
       />
       <TextInput
@@ -54,6 +58,7 @@ const Login = ({ navigation }) => {
         value={password}
         secureTextEntry={true}
         style={styles.textInput}
+        onChangeText={(text) => setPassword(text)}
         left={<TextInput.Icon icon="lock" />}
       />
 
