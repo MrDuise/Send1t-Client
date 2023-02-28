@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
+const Stack = createNativeStackNavigator();
 
 import { theme } from '../../../infrastructure/theme';
 
@@ -19,13 +21,18 @@ const Login = ({ navigation }) => {
   //if the login is successful, it will navigate to the ConversationsLog screen
   const handleLogin = async () => {
     setLoading(true);
-    console.log(username, password)
+    console.log(username, password);
     try {
       const user = await login(username, password);
-     
+      console.log("in login screen", user);
 
-      if (user !== null) {
-        navigation.navigate('ConversationLog');
+      
+
+      if (user !== null && user !== undefined) {
+        console.log(user)
+        navigation.navigate('ConversationsLog', {
+          userName: user,
+        })
       } else {
         alert('Invalid username or password');
         setUsername('');
@@ -36,7 +43,6 @@ const Login = ({ navigation }) => {
       console.error(error);
     }
     setLoading(false);
-   
   };
 
   return (
