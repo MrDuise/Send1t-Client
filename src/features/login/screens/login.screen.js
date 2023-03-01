@@ -17,6 +17,8 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
+  
+
   //takes the username and password and sends it to the backend
   //if the login is successful, it will navigate to the ConversationsLog screen
   const handleLogin = async () => {
@@ -24,15 +26,13 @@ const Login = ({ navigation }) => {
     console.log(username, password);
     try {
       const user = await login(username, password);
-      console.log("in login screen", user);
-
-      
+      console.log('in login screen', user);
 
       if (user !== null && user !== undefined) {
-        console.log(user)
+        console.log(user);
         navigation.navigate('ConversationsLog', {
           userName: user,
-        })
+        });
       } else {
         alert('Invalid username or password');
         setUsername('');
