@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TextInput, Button, HelperText } from 'react-native-paper';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import { theme } from '../../../infrastructure/theme';
 
@@ -13,20 +13,39 @@ const Register = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleRegister = async () => {
-    if(username === '' || password === '' || firstName === '' || lastName === '' || email === ''){
+    if (
+      username === '' ||
+      password === '' ||
+      firstName === '' ||
+      lastName === '' ||
+      email === ''
+    ) {
       alert('Please fill in all fields');
       return;
     }
-    if(!checkPasswordRequirements()){
-      alert('Password must be 8-15 characters, contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character');
+    if (!checkPasswordRequirements()) {
+      alert(
+        'Password must be 8-15 characters, contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character'
+      );
       return;
     }
     setLoading(true);
 
+    const onChangePassword = (text) => {
+      setPassword(text);
+    };
+
     try {
-      const user = await register(username, password, firstName, lastName, email);
+      const user = await register(
+        username,
+        password,
+        firstName,
+        lastName,
+        email
+      );
       console.log('in register screen', user);
 
       if (user !== null && user !== undefined) {
@@ -44,18 +63,26 @@ const Register = () => {
       console.error(error);
     }
   };
-
-  
-
-  const checkPasswordRequirements = () => {
+  /**
+   *tests the current password string against the regex
+   * if the current string matches the regex, it returns true
+   * if the current string does not match the regex, it returns false
+   * @return {*}
+   */
+  const checkPasswordRequirements = (text) => {
     const passwordRegex =
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?!.*\s).{8,15}$/;
 
-    return passwordRegex.test(password);
+    return passwordRegex.test(text);
   };
 
-  const passwordHasError = () => {
-    return !checkPasswordRequirements();
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    if (password !== '' && !checkPasswordRequirements(text)) {
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+    }
   };
 
   return (
@@ -63,9 +90,10 @@ const Register = () => {
       <Logo />
       <Text style={styles.title}>Registation</Text>
       <Text style={styles.muted}>Make a new account</Text>
-      
-      <HelperText type="error" visible={passwordHasError()} padding='none'>
-        Password must be 8-15 characters, contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character
+
+      <HelperText type="error" visible={passwordError} padding="none">
+        Password must be 8-15 characters, contain at least one lowercase letter,
+        one uppercase letter, one numeric digit, and one special character
       </HelperText>
       <TextInput
         label="Username"
@@ -79,10 +107,9 @@ const Register = () => {
         mode="outlined"
         secureTextEntry={true}
         style={styles.textInput}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={handlePasswordChange}
         left={<TextInput.Icon icon="lock" />}
       />
-      
 
       <TextInput
         label="First Name"
@@ -108,7 +135,11 @@ const Register = () => {
         left={<TextInput.Icon icon="email" />}
       />
 
-      <Button mode="contained" onPress={handleRegister} style={styles.registerButton}>
+      <Button
+        mode="contained"
+        onPress={handleRegister}
+        style={styles.registerButton}
+      >
         Register
       </Button>
     </SafeAreaView>
