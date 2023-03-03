@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import AppContext from '../../../components/AppContext';
 const Stack = createNativeStackNavigator();
 
 import { theme } from '../../../infrastructure/theme';
@@ -13,29 +14,27 @@ import { login } from '../../../infrastructure/backend/request';
 import Logo from '../../../components/Logo';
 
 const Login = ({ navigation }) => {
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  
+  const myContext = useContext(AppContext);
 
   //takes the username and password and sends it to the backend
   //if the login is successful, it will navigate to the ConversationsLog screen
   const handleLogin = async () => {
     setLoading(true);
-    console.log(username, password);
+    console.log(myContext.userNameValue, password);
     try {
-      const user = await login(username, password);
-      console.log('in login screen', user);
+      const user = await login(myContext.userNameValue, password);
 
       if (user !== null && user !== undefined) {
-        console.log(user);
-        navigation.navigate('ConversationsLog', {
-          userName: user,
-        });
+        myContext.setSignedIn(true);
+
+        console.log(myContext.userNameValue);
+        navigation.navigate('ConversationsLog');
       } else {
         alert('Invalid username or password');
-        setUsername('');
+        myContext.setUserName('');
         setPassword('');
       }
     } catch (error) {
@@ -53,9 +52,9 @@ const Login = ({ navigation }) => {
       <TextInput
         label="Username"
         mode="outlined"
-        value={username}
+        value={myContext.userNameValue}
         style={styles.textInput}
-        onChangeText={(text) => setUsername(text)}
+        onChangeText={myContext.setUserName}
         left={<TextInput.Icon icon="account" />}
       />
       <TextInput

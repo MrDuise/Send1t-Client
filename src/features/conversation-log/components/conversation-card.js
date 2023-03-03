@@ -12,6 +12,8 @@ import AvatarIcon from '../../../components/Avatar'
  * @return {*}
  */
 
+//TODO: add a prop to the conversation card that will allow the user to click on the card and view the conversation
+//TODO: set the message to be the last message sent in the conversation
 const ConversationCard = ({ conversation = {} }) => {
   const {
     participants = [{ userName: 'JohnSmith' }, { userName: 'MikeDo' }],
@@ -27,8 +29,7 @@ const ConversationCard = ({ conversation = {} }) => {
   //TODO: the one on one conversation title will need work for the second participant
   const title = isGroup
     ? participants.map((participant) => participant.userName).join(', ')
-    : participants[1].userName;
-
+    : participants[0];
   return (
     <Card.Title
       style={styles.card}

@@ -48,16 +48,16 @@ const logOut = async () => {
   }
 };
 
-const getConversations = async () => {
+const getConversations = async (userNameValue) => {
   try {
-    const response = await fetch('http://localhost:8000/v1/conversations/getUserConversations', {
+    const response = await fetch('http://10.0.2.2:8000/v1/conversations/getUserConversations', {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userName: userName
+        userName: userNameValue
       }),
     });
 
@@ -75,10 +75,38 @@ const getConversations = async () => {
   }
 };
 
+const getMessages = async (conversationId) => {
+  try {
+    const response = await fetch('http://10.0.2.2:8000/v1/conversations/getMessageLog', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        conversationId: conversationId
+      }),
+    });
+
+    const data = await response.json();
+    if (data) {
+
+      return data.messageList;
+    } else {
+
+      return null;
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   login,
   googleLogin,
   getStatus,
   logOut,
-  getConversations
+  getConversations,
+  getMessages,
 };

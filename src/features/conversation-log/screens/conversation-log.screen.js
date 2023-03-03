@@ -6,8 +6,10 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { theme } from '../../../infrastructure/theme';
+
+import AppContext from '../../../components/AppContext';
 import ConversationList from '../components/conversation-list';
 
 import {getConversations} from '../../../infrastructure/backend/request';
@@ -19,24 +21,21 @@ Handles the logic for getting the conversations from the API then passes that to
  * @return {*} 
  */
 const ConversationsLog = ({route}) => {
+
+  const myContext = useContext(AppContext);
   const [Conversations, setConversations] = useState([]);
-  const {userName} = route.params;
+  const userName = myContext.userNameValue;
 
   useEffect(() => {
     const getConversationsFromAPI = async () => {
-      const conversations = await getConversations(JSON.stringify(userName));
+      const conversations = await getConversations(userName);
       setConversations(conversations);
-      conversations.map((conversation) => {
-        console.log(conversation);
-      });
-
     };
     getConversationsFromAPI();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-//this breaks because username is not being passed correctly
       <ConversationList conversationsList ={Conversations}/>
     </SafeAreaView>
   );
