@@ -102,6 +102,9 @@ const getMessages = async (conversationId) => {
   }
 };
 
+const register = async (userName, password, firstName, lastName, email) => { };
+  
+
 module.exports = {
   login,
   googleLogin,

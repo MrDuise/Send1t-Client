@@ -14,7 +14,7 @@ import WelcomePage from './src/features/welcome page/screens/welcome-page.screen
 import ConversationCard from './src/features/conversation-log/components/conversation-card';
 import Login from './src/features/login/screens/login.screen';
 import EditProfile from './src/features/editProfile/screens/EditProfile';
-import chatScreen from './src/features/chat page/screens/chatScreen';
+import chatScreen from './src/features/chat-page/screens/chatScreen';
 
 const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
