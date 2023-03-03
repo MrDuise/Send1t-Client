@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import { TextInput } from 'react-native-paper';
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
+import AppContext from '../../../components/AppContext';
+import { theme } from '../../../infrastructure/theme';
 
 import MessagesLog from '../components/messagesLog'
 

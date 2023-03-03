@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { theme } from '../../../infrastructure/theme'
 /**
  *This is the messages that shows up for the left side of the chat screen
  * meaning the signed in user
