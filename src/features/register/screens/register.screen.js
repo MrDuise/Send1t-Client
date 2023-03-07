@@ -3,10 +3,11 @@ import { TextInput, Button, HelperText } from 'react-native-paper';
 import React, { useState } from 'react';
 
 import { theme } from '../../../infrastructure/theme';
-
+import { register } from '../../../infrastructure/backend/request';
 import Logo from '../../../components/Logo';
 
-const Register = () => {
+//screen will not scroll when keyboard is open
+const Register = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -14,6 +15,8 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  //doesnot work, triggers the password error
 
   const handleRegister = async () => {
     if (
@@ -26,17 +29,13 @@ const Register = () => {
       alert('Please fill in all fields');
       return;
     }
-    if (!checkPasswordRequirements()) {
+    if (checkPasswordRequirements()) {
       alert(
         'Password must be 8-15 characters, contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character'
       );
       return;
     }
     setLoading(true);
-
-    const onChangePassword = (text) => {
-      setPassword(text);
-    };
 
     try {
       const user = await register(
@@ -48,11 +47,18 @@ const Register = () => {
       );
       console.log('in register screen', user);
 
+      if (user === { error: 'Username/Email not available' }) {
+        alert('Username/Email not available');
+        setUsername('');
+        setPassword('');
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+      }
+
       if (user !== null && user !== undefined) {
         console.log(user);
-        navigation.navigate('ConversationsLog', {
-          userName: user,
-        });
+        navigation.navigate('Login');
       } else {
         alert('Invalid username or password');
         setUsername('');

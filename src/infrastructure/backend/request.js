@@ -102,7 +102,37 @@ const getMessages = async (conversationId) => {
   }
 };
 
-const register = async (userName, password, firstName, lastName, email) => { };
+const register = async (userName, password, firstName, lastName, email) => { 
+  try {
+    const response = await fetch('http://10.0.2.2:8000/v1/users/register/', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userName: userName,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+      }),
+    });
+
+    return response.status === 400 && response.json().message === "Username/Email not available"
+    ? { error: "Username/Email not available" }
+    : response.status === 200
+      ? (async () => {
+          const data = await response.json();
+          const user = data.userName;
+          return user;
+        })()
+      : null;
+      
+  } catch (err) {
+    console.log(err);
+  }
+};
   
 
 module.exports = {
@@ -112,4 +142,5 @@ module.exports = {
   logOut,
   getConversations,
   getMessages,
+  register,
 };

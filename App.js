@@ -14,7 +14,7 @@ import WelcomePage from './src/features/welcome page/screens/welcome-page.screen
 import ConversationCard from './src/features/conversation-log/components/conversation-card';
 import Login from './src/features/login/screens/login.screen';
 import EditProfile from './src/features/editProfile/screens/EditProfile';
-import chatScreen from './src/features/chat-page/screens/chatScreen';
+import ChatRoom from './src/features/chat-page/screens/chatRoom';
 
 const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
@@ -60,7 +60,7 @@ export default function App() {
               component={ConversationCard}
             />
             <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="chatScreen" component={chatScreen} />
+            <Stack.Screen name="ChatRoom" component={ChatRoom} />
           </Stack.Navigator>
           <StatusBar style="auto" />
         </SafeAreaView>
