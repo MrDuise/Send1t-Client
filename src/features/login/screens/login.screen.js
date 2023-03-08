@@ -3,9 +3,7 @@ import { TextInput, Button } from 'react-native-paper';
 import React, { useState, useContext } from 'react';
 import AppContext from '../../../components/AppContext';
 
-
 import { theme } from '../../../infrastructure/theme';
-
 
 import { login } from '../../../infrastructure/backend/request';
 
@@ -43,46 +41,47 @@ const Login = ({ navigation }) => {
   };
 
   const registerNavigate = () => {
-
     navigation.navigate('Register');
   };
 
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.logoContainer}>
-        
-      </View>
+      <View style={styles.logoContainer}></View>
       <Text style={styles.title}>Welcome</Text>
-        <Text style={styles.subTitle}>Please Sign in to conntinue</Text>
+      <Text style={styles.subTitle}>Please Sign in to conntinue</Text>
       <View style={styles.textInputContainer}>
-      <TextInput
-        label="Username"
-        mode="outlined"
-        value={myContext.userNameValue}
-        style={styles.textInput}
-        onChangeText={myContext.setUserName}
-        left={<TextInput.Icon icon="account" />}
-      />
-      <TextInput
-        label="Password"
-        mode="outlined"
-        value={password}
-        secureTextEntry={true}
-        style={styles.textInput}
-        onChangeText={(text) => setPassword(text)}
-        left={<TextInput.Icon icon="lock" />}
-      />
-   <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        <TextInput
+          label="Username"
+          mode="outlined"
+          value={myContext.userNameValue}
+          style={styles.textInput}
+          onChangeText={myContext.setUserName}
+          left={<TextInput.Icon icon="account" />}
+        />
+        <TextInput
+          label="Password"
+          mode="outlined"
+          value={password}
+          secureTextEntry={true}
+          style={styles.textInput}
+          onChangeText={(text) => setPassword(text)}
+          left={<TextInput.Icon icon="lock" />}
+        />
+        <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </View>
-      <Button mode="contained" onPress={handleLogin} loading={loading} style={styles.signInButton}>
+      <Button
+        mode="contained"
+        onPress={handleLogin}
+        loading={loading}
+        style={styles.signInButton}
+      >
         Login
       </Button>
 
       <View style={styles.footer}>
-      
-      <Text onPress={registerNavigate} style={styles.subTitle}>Don't have an account?</Text>
-
+        <Text onPress={registerNavigate} style={styles.subTitle}>
+          Don't have an account?
+        </Text>
       </View>
     </SafeAreaView>
   );
@@ -90,14 +89,12 @@ const Login = ({ navigation }) => {
 
 export default Login;
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    
+
     borderWidth: 2,
   },
   logoContainer: {

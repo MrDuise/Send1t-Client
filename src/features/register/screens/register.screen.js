@@ -18,6 +18,10 @@ const Register = ({ navigation }) => {
 
   //doesnot work, triggers the password error
 
+  const loginNavigate = () => {
+    navigation.navigate('Login');
+  };
+
   const handleRegister = async () => {
     if (
       username === '' ||
@@ -47,6 +51,7 @@ const Register = ({ navigation }) => {
       );
       console.log('in register screen', user);
 
+      //if the user is null, it means that the username is already taken
       if (user === { error: 'Username/Email not available' }) {
         alert('Username/Email not available');
         setUsername('');
@@ -93,67 +98,79 @@ const Register = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Logo />
-      <Text style={styles.title}>Registation</Text>
-      <Text style={styles.muted}>Make a new account</Text>
+      <View style={styles.logoContainer}></View>
+      
 
-      <HelperText type="error" visible={passwordError} padding="none">
-        Password must be 8-15 characters, contain at least one lowercase letter,
-        one uppercase letter, one numeric digit, and one special character
-      </HelperText>
-      <TextInput
-        label="Username"
-        mode="outlined"
-        style={styles.textInput}
-        onChangeText={(text) => setUsername(text)}
-        left={<TextInput.Icon icon="account" />}
-      />
-      <TextInput
-        label="Password"
-        mode="outlined"
-        secureTextEntry={true}
-        style={styles.textInput}
-        onChangeText={handlePasswordChange}
-        left={<TextInput.Icon icon="lock" />}
-      />
+      <Text style={styles.title}>Welcome</Text>
+      <Text style={styles.subTitle}>Make a new account</Text>
+      <View style={styles.textInputContainer}>
+        <HelperText type="error" visible={passwordError} padding="none">
+          Password must be 8-15 characters, contain at least one lowercase
+          letter, one uppercase letter, one numeric digit, and one special
+          character
+        </HelperText>
+        <TextInput
+          label="Username"
+          mode="outlined"
+          style={styles.textInput}
+          onChangeText={(text) => setUsername(text)}
+          left={<TextInput.Icon icon="account" />}
+        />
+        <TextInput
+          label="Password"
+          mode="outlined"
+          secureTextEntry={true}
+          style={styles.textInput}
+          onChangeText={handlePasswordChange}
+          left={<TextInput.Icon icon="lock" />}
+        />
 
-      <TextInput
-        label="First Name"
-        mode="outlined"
-        style={styles.textInput}
-        onChangeText={(text) => setFirstName(text)}
-        left={<TextInput.Icon icon="account" />}
-      />
+        <TextInput
+          label="First Name"
+          mode="outlined"
+          style={styles.textInput}
+          onChangeText={(text) => setFirstName(text)}
+          left={<TextInput.Icon icon="account" />}
+        />
 
-      <TextInput
-        label="Last Name"
-        mode="outlined"
-        style={styles.textInput}
-        onChangeText={(text) => setLastName(text)}
-        left={<TextInput.Icon icon="account" />}
-      />
+        <TextInput
+          label="Last Name"
+          mode="outlined"
+          style={styles.textInput}
+          onChangeText={(text) => setLastName(text)}
+          left={<TextInput.Icon icon="account" />}
+        />
 
-      <TextInput
-        label="Email"
-        mode="outlined"
-        style={styles.textInput}
-        onChangeText={(text) => setEmail(text)}
-        left={<TextInput.Icon icon="email" />}
-      />
-
+        <TextInput
+          label="Email"
+          mode="outlined"
+          style={styles.textInput}
+          onChangeText={(text) => setEmail(text)}
+          left={<TextInput.Icon icon="email" />}
+        />
+        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+      </View>
       <Button
         mode="contained"
         onPress={handleRegister}
-        style={styles.registerButton}
+        loading={loading}
+        style={styles.signInButton}
       >
         Register
       </Button>
+
+      <View style={styles.footer}>
+        <Text onPress={loginNavigate} style={styles.subTitle}>
+          Already have an account?
+        </Text>
+      </View>
     </SafeAreaView>
   );
 };
 
 export default Register;
 
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -190,5 +207,75 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.ui.primary,
     borderWidth: 1,
     marginBottom: theme.sizes[3],
+  },
+});
+
+*/
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    
+  },
+  logoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: 'grey', // neutral-100
+  },
+  title: {
+    fontSize: 32,
+    lineHeight: 48,
+    color: '#171A1FFF', // neutral-900
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderColor: 'red',
+    borderWidth: 1,
+
+  },
+  subTitle: {
+    fontSize: 20,
+    lineHeight: 30,
+    color: '#9095A0FF', // neutral-500
+  },
+  textInputContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  textInput: {
+    width: '80%',
+    marginVertical: 8,
+  },
+  forgotPassword: {
+    fontSize: 14,
+    lineHeight: 22,
+    color: '#00BDD6FF', // primary-500
+    alignSelf: 'flex-end',
+    marginRight: '10%',
+  },
+  signInButtonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  signInButton: {
+    width: '80%',
+    height: 44,
+    marginVertical: 8,
+    justifyContent: 'center',
+    borderRadius: 4, // border-m
+    backgroundColor: '#00BDD6FF', // primary-500
+  },
+  footer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
