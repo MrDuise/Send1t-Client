@@ -1,13 +1,11 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
 import AppContext from '../../../components/AppContext';
-const Stack = createNativeStackNavigator();
+
 
 import { theme } from '../../../infrastructure/theme';
 
-import { useNavigation } from '@react-navigation/native';
 
 import { login } from '../../../infrastructure/backend/request';
 
@@ -44,11 +42,20 @@ const Login = ({ navigation }) => {
     setLoading(false);
   };
 
+  const registerNavigate = () => {
+
+    navigation.navigate('Register');
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <Logo />
-      <Text style={styles.title}>Login</Text>
-      <Text style={styles.muted}>Please Sign in to conntinue</Text>
+      <View style={styles.logoContainer}>
+        
+      </View>
+      <Text style={styles.title}>Welcome</Text>
+        <Text style={styles.subTitle}>Please Sign in to conntinue</Text>
+      <View style={styles.textInputContainer}>
       <TextInput
         label="Username"
         mode="outlined"
@@ -66,47 +73,87 @@ const Login = ({ navigation }) => {
         onChangeText={(text) => setPassword(text)}
         left={<TextInput.Icon icon="lock" />}
       />
-
-      <Button mode="contained" onPress={handleLogin} loading={loading}>
+   <Text style={styles.forgotPassword}>Forgot Password?</Text>
+      </View>
+      <Button mode="contained" onPress={handleLogin} loading={loading} style={styles.signInButton}>
         Login
       </Button>
-      <Button mode="contained" style={styles.registerButton}>
-        Register
-      </Button>
+
+      <View style={styles.footer}>
+      
+      <Text onPress={registerNavigate} style={styles.subTitle}>Don't have an account?</Text>
+
+      </View>
     </SafeAreaView>
   );
 };
 
 export default Login;
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.colorTheme.purple,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    
+    borderWidth: 2,
+  },
+  logoContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: 'grey', // neutral-100
   },
   title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: 25,
+    flex: 1,
+    fontSize: 32,
+    lineHeight: 48,
+    color: '#171A1FFF', // neutral-900
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
-  muted: {
+  subTitle: {
     fontSize: 20,
-    color: theme.colors.colorTheme.seaBlue,
-    marginBottom: 50,
+    lineHeight: 30,
+    color: '#9095A0FF', // neutral-500
   },
-
+  textInputContainer: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
   textInput: {
-    width: 300,
-    marginBottom: 20,
+    width: '80%',
+    marginVertical: 8,
   },
-
-  buttonLogin: {
-    width: 250,
-    marginBottom: 20,
+  forgotPassword: {
+    fontSize: 14,
+    lineHeight: 22,
+    color: '#00BDD6FF', // primary-500
+    alignSelf: 'flex-end',
+    marginRight: '10%',
   },
-  registerButton: {
-    width: 200,
+  signInButtonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  signInButton: {
+    width: '80%',
+    height: 44,
+    marginVertical: 8,
+    justifyContent: 'center',
+    borderRadius: 4, // border-m
+    backgroundColor: '#00BDD6FF', // primary-500
+  },
+  footer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
