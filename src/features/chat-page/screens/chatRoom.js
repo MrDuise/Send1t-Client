@@ -1,126 +1,193 @@
-import { StyleSheet, View, SafeAreaView } from 'react-native'
-import { TextInput, Button, List, Text, Provider } from 'react-native-paper';
-import React, {useEffect, useState, useContext} from 'react'
-import AppContext from '../../../components/AppContext';
-import { theme } from '../../../infrastructure/theme';
-
-import MessagesLog from '../components/messagesLog'
-
-
-import {io} from 'socket.io-client';
-
-const socket = io('http://localhost:3000');
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
+import { Avatar, IconButton } from 'react-native-paper';
+import io from 'socket.io-client';
 
 const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
+  const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const socketRef = useRef();
 
   useEffect(() => {
-    // Listen for incoming chat messages
-    socket.on('chat message', (msg) => {
-      setMessages((messages) => [...messages, msg]);
+    socketRef.current = io('http://localhost:3000');
+
+    socketRef.current.on('message', (message) => {
+      setMessages((messages) => [...messages, message]);
+    });
+
+    socketRef.current.on('typing', () => {
+      setIsTyping(true);
+    });
+
+    socketRef.current.on('stop typing', () => {
       setIsTyping(false);
     });
 
-    // Clean up the Socket.IO connection
     return () => {
-      socket.disconnect();
+      socketRef.current.disconnect();
     };
   }, []);
 
   const sendMessage = () => {
-    if (message.trim() !== '') {
-      socket.emit('chat message', message.trim());
-      setMessage('');
-      setIsTyping(false);
+    if (text.trim() !== '') {
+      const message = {
+        _id: messages.length + 1,
+        text: text.trim(),
+        createdAt: new Date(),
+        user: {
+          _id: 1,
+          name: 'User',
+          avatar: 'https://placeimg.com/140/140/any',
+        },
+      };
+      socketRef.current.emit('message', message);
+      setText('');
     }
   };
 
-  const handleTyping = (text) => {
-    setMessage(text);
-    if (text.trim() !== '') {
-      setIsTyping(true);
-    } else {
-      setIsTyping(false);
-    }
+  const sendTyping = () => {
+    socketRef.current.emit('typing');
+    setTimeout(() => {
+      socketRef.current.emit('stop typing');
+    }, 1000);
+  };
+
+  const renderItem = ({ item }) => {
+    return (
+      <View
+        style={[
+          styles.messageContainer,
+          item.user._id === 1 ? styles.sentMessage : styles.receivedMessage,
+        ]}
+      >
+        {item.user._id !== 1 && (
+          <Avatar.Image
+            size={40}
+            source={{ uri: item.user.avatar }}
+            style={styles.avatar}
+          />
+        )}
+        <View style={styles.messageContent}>
+          <Text style={styles.messageText}>{item.text}</Text>
+          <Text style={styles.messageTime}>
+            {new Date(item.createdAt).toLocaleTimeString()}
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
+  const renderTextInput = () => {
+    return (
+      <View style={styles.textInputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Type a message..."
+          value={text}
+          onChangeText={(text) => {
+            setText(text);
+            sendTyping();
+          }}
+        />
+        <TouchableOpacity onPress={sendMessage}>
+          <IconButton icon="send" disabled={text.trim() === ''} />
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   return (
     <View style={styles.container}>
-      <List.Section style={styles.listSection}>
-        <List.Subheader>Chat Messages</List.Subheader>
-        {messages.map((msg, index) => (
-          <List.Item key={index} title={msg} />
-        ))}
-      </List.Section>
-      <View style={styles.inputContainer}>
-        <TextInput
-          label="Type a message"
-          value={message}
-          onChangeText={handleTyping}
-          style={styles.textInput}
-        />
-        {isTyping && (
-          <View style={styles.typingIndicatorContainer}>
-            <Text style={styles.typingIndicatorText}>User is typing...</Text>
-          </View>
-        )}
-        <Button mode="contained" onPress={sendMessage} style={styles.sendButton}>
-          Send
-        </Button>
-      </View>
+      <FlatList
+        data={messages}
+        renderItem={renderItem}
+        keyExtractor={(item) => item._id.toString()}
+        inverted={true}
+        contentContainerStyle={styles.messagesContainer}
+      />
+      {isTyping && <Text style={styles.typingMessage}>User is typing...</Text>}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}
+      >
+        {renderTextInput()}
+      </KeyboardAvoidingView>
     </View>
   );
 };
 
-export default ChatRoom
-
-
+export default ChatRoom;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
   },
-  listSection: {
-    flex: 1,
+  messagesContainer: {
+    flexGrow: 1,
+    padding: 10,
   },
-  inputContainer: {
+  messageContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginVertical: 5,
+  },
+  sentMessage: {
+    alignSelf: 'flex-end',
+  },
+  receivedMessage: {
+    alignSelf: 'flex-start',
+  },
+  avatar: {
+    marginRight: 10,
+  },
+  messageContent: {
+    borderRadius: 10,
+    backgroundColor: 'white',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    maxWidth: '80%',
+  },
+  messageText: {
+    fontSize: 16,
+  },
+  messageTime: {
+    fontSize: 12,
+    alignSelf: 'flex-end',
+    marginTop: 5,
+  },
+  textInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 25,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderTopColor: 'lightgray',
   },
   textInput: {
-    flex: 1,
-    marginRight: 16,
-    backgroundColor: 'transparent',
+    flexGrow: 1,
+    marginRight: 10,
   },
-  sendButton: {
-    marginLeft: 8,
+  typingMessage: {
+    alignSelf: 'flex-start',
+    marginLeft: 10,
+    marginBottom: 5,
+    fontStyle: 'italic',
   },
-  typingIndicatorContainer: {
-    position: 'absolute',
-    top: -16,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-  },
-  typingIndicatorText: {
-    fontSize: 12,
-    color: '#aaa',
-    textAlign: 'center',
+  keyboardAvoidingView: {
+    borderTopWidth: 1,
+    borderTopColor: 'lightgray',
   },
 });
+
+

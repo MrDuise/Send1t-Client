@@ -15,6 +15,7 @@ import ConversationCard from './src/features/conversation-log/components/convers
 import Login from './src/features/login/screens/login.screen';
 import EditProfile from './src/features/editProfile/screens/EditProfile';
 import ChatRoom from './src/features/chat-page/screens/chatRoom';
+import ProfilePage from './src/features/profile page/screens/profile-screen';
 
 const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
@@ -47,7 +48,7 @@ export default function App() {
     <NavigationContainer>
       <AppContext.Provider value={userValues}>
         <SafeAreaView style={styles.container}>
-          <Stack.Navigator initialRouteName="Home">
+          <Stack.Navigator initialRouteName="Profile">
             <Stack.Screen name="Home" component={WelcomePage} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
@@ -61,6 +62,7 @@ export default function App() {
             />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="ChatRoom" component={ChatRoom} />
+            <Stack.Screen name="Profile" component={ProfilePage} />
           </Stack.Navigator>
           <StatusBar style="auto" />
         </SafeAreaView>
