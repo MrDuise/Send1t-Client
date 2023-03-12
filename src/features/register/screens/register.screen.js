@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, KeyboardAvoidingView  } from 'react-native';
 import { TextInput, Button, HelperText } from 'react-native-paper';
 import React, { useState } from 'react';
 
@@ -97,7 +97,7 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView  style={styles.container}>
       <View style={styles.logoContainer}></View>
       
 
@@ -148,7 +148,7 @@ const Register = ({ navigation }) => {
           onChangeText={(text) => setEmail(text)}
           left={<TextInput.Icon icon="email" />}
         />
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        
       </View>
       <Button
         mode="contained"
@@ -164,7 +164,7 @@ const Register = ({ navigation }) => {
           Already have an account?
         </Text>
       </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView >
   );
 };
 
@@ -193,9 +193,7 @@ const styles = StyleSheet.create({
     color: '#171A1FFF', // neutral-900
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderColor: 'red',
-    borderWidth: 1,
-
+   top: -10
   },
   subTitle: {
     fontSize: 20,
@@ -203,7 +201,7 @@ const styles = StyleSheet.create({
     color: '#9095A0FF', // neutral-500
   },
   textInputContainer: {
-    flex: 2,
+    
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
