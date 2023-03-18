@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Avatar, Button, Text } from 'react-native-paper';
+import { StyleSheet, View, FlatList } from 'react-native';
+import { Avatar, Button, Text, IconButton } from 'react-native-paper';
 
 const avatars = [
-  { name: 'avatar1', image: require('./assets/avatars/avatar1.png') },
-  { name: 'avatar2', image: require('./assets/avatars/avatar2.png') },
-  { name: 'avatar3', image: require('./assets/avatars/avatar3.png') },
-  { name: 'avatar4', image: require('./assets/avatars/avatar4.png') },
-  { name: 'avatar5', image: require('./assets/avatars/avatar5.png') },
-    { name: 'avatar6', image: require('./assets/avatars/avatar6.png') },
+  { name: 'avatar1', image: require('../../../../assets/avatars/avatar1.png') },
+  { name: 'avatar2', image: require('../../../../assets/avatars/avatar2.png') },
+  { name: 'avatar3', image: require('../../../../assets/avatars/avatar3.png') },
+  { name: 'avatar4', image: require('../../../../assets/avatars/avatar4.png') },
+  { name: 'avatar5', image: require('../../../../assets/avatars/avatar5.png') },
+    { name: 'avatar6', image: require('../../../../assets/avatars/avatar6.png') },
 ];
 
 const AvatarSelection = () => {
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [selectedAvatar, setSelectedAvatar] = useState('');
 
+  //TODO: Add a function to handle the avatar selection
+  //AS react native paper avatar does not have an onPress event
   const handleAvatarSelect = (avatar) => {
     setSelectedAvatar(avatar);
   };
@@ -22,18 +24,26 @@ const AvatarSelection = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Select a Starter Profile Picture</Text>
       <View style={styles.avatarContainer}>
-        {avatars.map((avatar) => (
-          <Avatar.Image
-            key={avatar.name}
-            source={avatar.image}
-            size={80}
-            style={[
-              styles.avatar,
-              selectedAvatar === avatar && styles.selectedAvatar,
-            ]}
-            onPress={() => handleAvatarSelect(avatar)}
-          />
-        ))}
+        <FlatList
+          data={avatars}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          keyExtractor={(item) => item.name}
+          numColumns={3}
+          renderItem={({ item }) => (
+           
+            <Avatar.Image
+              source={item.image}
+              size={80}
+              style={[
+                styles.avatar,
+                selectedAvatar === item && styles.selectedAvatar,
+              ]}
+              onPress={() => handleAvatarSelect(item)}
+            />
+           
+          )}
+        />
+        
       </View>
       <Button
         mode="contained"
@@ -64,6 +74,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   avatarContainer: {
+    rowGap: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
@@ -71,6 +82,7 @@ const styles = StyleSheet.create({
   avatar: {
     borderWidth: 2,
     borderColor: '#000',
+    margin: 10,
   },
   selectedAvatar: {
     borderWidth: 4,

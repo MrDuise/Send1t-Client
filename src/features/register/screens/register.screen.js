@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, KeyboardAvoidingView  } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard  } from 'react-native';
 import { TextInput, Button, HelperText } from 'react-native-paper';
 import React, { useState } from 'react';
 
@@ -52,13 +52,8 @@ const Register = ({ navigation }) => {
       console.log('in register screen', user);
 
       //if the user is null, it means that the username is already taken
-      if (user === { error: 'Username/Email not available' }) {
-        alert('Username/Email not available');
-        setUsername('');
-        setPassword('');
-        setFirstName('');
-        setLastName('');
-        setEmail('');
+      if (user === null) {
+        
       }
 
       if (user !== null && user !== undefined) {
@@ -68,10 +63,21 @@ const Register = ({ navigation }) => {
         alert('Invalid username or password');
         setUsername('');
         setPassword('');
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setLoading(false);
       }
     } catch (error) {
       alert('An error occurred');
       console.error(error);
+      alert('Username/Email not available');
+        setUsername('');
+        setPassword('');
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setLoading(false);
     }
   };
   /**
@@ -97,6 +103,7 @@ const Register = ({ navigation }) => {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <KeyboardAvoidingView  style={styles.container}>
       <View style={styles.logoContainer}></View>
       
@@ -112,6 +119,7 @@ const Register = ({ navigation }) => {
         <TextInput
           label="Username"
           mode="outlined"
+          value={username}
           style={styles.textInput}
           onChangeText={(text) => setUsername(text)}
           left={<TextInput.Icon icon="account" />}
@@ -119,6 +127,7 @@ const Register = ({ navigation }) => {
         <TextInput
           label="Password"
           mode="outlined"
+          value={password}
           secureTextEntry={true}
           style={styles.textInput}
           onChangeText={handlePasswordChange}
@@ -128,6 +137,7 @@ const Register = ({ navigation }) => {
         <TextInput
           label="First Name"
           mode="outlined"
+          value={firstName}
           style={styles.textInput}
           onChangeText={(text) => setFirstName(text)}
           left={<TextInput.Icon icon="account" />}
@@ -136,6 +146,7 @@ const Register = ({ navigation }) => {
         <TextInput
           label="Last Name"
           mode="outlined"
+          value={lastName}
           style={styles.textInput}
           onChangeText={(text) => setLastName(text)}
           left={<TextInput.Icon icon="account" />}
@@ -144,6 +155,7 @@ const Register = ({ navigation }) => {
         <TextInput
           label="Email"
           mode="outlined"
+          value={email}
           style={styles.textInput}
           onChangeText={(text) => setEmail(text)}
           left={<TextInput.Icon icon="email" />}
@@ -165,6 +177,7 @@ const Register = ({ navigation }) => {
         </Text>
       </View>
     </KeyboardAvoidingView >
+    </TouchableWithoutFeedback>
   );
 };
 

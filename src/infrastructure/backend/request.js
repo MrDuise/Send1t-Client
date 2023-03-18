@@ -177,13 +177,13 @@ const register = async (userName, password, firstName, lastName, email) => {
     if (data) {
       //console.log("in the login request handler", data);
       if (data.message === 'Username/Email not available') {
-        return { error: 'Username/Email not available' };
+        throw new Error('Username/Email not available');
       } else {
         const user = data.userName;
         return user;
       }
     } else {
-      return { error: 'registration failed' };
+      throw new Error('registration failed');
     }
   } catch (err) {
     console.log(err);
