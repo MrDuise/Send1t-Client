@@ -6,14 +6,14 @@ import ConversationCard from './conversation-card';
  *
  * @return {*} 
  */
-const ConversationList = ({Conversation}) => {
+const ConversationList = ({conversationsList}) => {
   return (
     <View>
-       {/* {Conversations.map((conversation) => {
+       {conversationsList.map((conversation) => {
         return <ConversationCard key={conversation._id} conversation={conversation} />;
       })
-   } */}
-   <ConversationCard />
+   } 
+   
     </View>
   )
 }

@@ -25,4 +25,11 @@ export const colors = {
       error: "#D0421B",
       success: "#138000",
     },
+    colorTheme : {
+      purple: "#B355FA",
+      darkPurple: "#6B4DE3",
+      darkSkyBlue: "#627CFA",
+      seaBlue: "#4D9BE3",
+      turkoice: "#4AEAFF",
+    }
   };

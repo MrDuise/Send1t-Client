@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import React from 'react';
 
 import { theme } from '../../../infrastructure/theme';
-import { Card, Text, Avatar } from 'react-native-paper';
+import { Card, Text, Avatar, Button } from 'react-native-paper';
 import AvatarIcon from '../../../components/Avatar'
 /**
  * Takes a conversation and displays it in a card format with the contacts name and the most recent message sent
@@ -14,34 +14,35 @@ import AvatarIcon from '../../../components/Avatar'
 
 //TODO: add a prop to the conversation card that will allow the user to click on the card and view the conversation
 //TODO: set the message to be the last message sent in the conversation
-const ConversationCard = ({ conversation = {} }) => {
+const FriendCard = ({ friend = {}, navagation }) => {
   const {
-    participants = [{ userName: 'JohnSmith' }, { userName: 'MikeDo' }],
-    messages = ['Hello There', 'Hey hows it going man?'],
-    isGroup = false,
+    userName = 'JohnSmith',
+    firstName = 'John',
+    lastName = 'Smith',
+    tagLine = 'Hello There',
     dateUpdated = '01/05/23',
-    admin = 'JohnSmith',
-  } = conversation;
+
+  } = friend;
 
   // If the conversation is a group conversation, the title will be the names of all the participants
   // If the conversation is a one on one conversation, the title will be the name of the other participant
 
   //TODO: the one on one conversation title will need work for the second participant
-  const title = isGroup
-    ? participants.map((participant) => participant.userName).join(', ')
-    : participants[0];
+
   return (
+    
     <Card.Title
       style={styles.card}
-      title={title}
-      subtitle={dateUpdated}
-      left={(props) => <AvatarIcon />}
-      right={(props) => <Text {...props}>{messages[1]}</Text>}
+      title={userName}
+      subtitle={tagLine}
+      left={(props) => <AvatarIcon size={12} />}
+      right={(props) => <IconButton {...props} icon="more-vert" onPress={() => {navagation.navagite('ProfilePage')}} />}
     />
+   
   );
 };
 
-export default ConversationCard;
+export default FriendCard;
 
 const styles = StyleSheet.create({
   card: {
