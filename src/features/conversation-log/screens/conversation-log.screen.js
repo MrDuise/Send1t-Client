@@ -20,7 +20,7 @@ Handles the logic for getting the conversations from the API then passes that to
  * @param {*} { Conversations }
  * @return {*} 
  */
-const ConversationsLog = ({route}) => {
+const ConversationsLog = ({navigation}) => {
 
   const myContext = useContext(AppContext);
   const [Conversations, setConversations] = useState([]);
@@ -36,7 +36,7 @@ const ConversationsLog = ({route}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ConversationList conversationsList ={Conversations}/>
+      <ConversationList conversationsList = {Conversations} nav={navigation}/>
     </SafeAreaView>
   );
 };

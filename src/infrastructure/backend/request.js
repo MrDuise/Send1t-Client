@@ -15,7 +15,6 @@ const login = async (userName, password) => {
     });
     const data = await response.json();
     if (data) {
-      //console.log("in the login request handler", data);
       const user = data.userName;
       return user;
     } else {
@@ -145,12 +144,15 @@ const getMessages = async (conversationId) => {
 
     const data = await response.json();
     if (data) {
-      return data.messageList;
+     
+      
+      return data.messages.docs;
     } else {
-      return null;
+      throw new Error('failed to get messages');
     }
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

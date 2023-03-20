@@ -6,11 +6,11 @@ import ConversationCard from './conversation-card';
  *
  * @return {*} 
  */
-const ConversationList = ({conversationsList}) => {
+const ConversationList = ({conversationsList, nav}) => {
   return (
     <View>
        {conversationsList.map((conversation) => {
-        return <ConversationCard key={conversation._id} conversation={conversation} />;
+        return <ConversationCard key={conversation._id} conversation={conversation} nav={nav}/>;
       })
    } 
    

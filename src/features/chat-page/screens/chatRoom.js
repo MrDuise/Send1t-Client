@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,9 +11,12 @@ import {
 } from 'react-native';
 import { Avatar, IconButton } from 'react-native-paper';
 import io from 'socket.io-client';
+import AppContext from '../../../components/AppContext';
 
-const ChatRoom = () => {
-  const [messages, setMessages] = useState([]);
+
+const ChatRoom = ({route}) => {
+  const myContext = useContext(AppContext);
+  const [messages, setMessages] = useState(route.params.messages);
   const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const socketRef = useRef();
@@ -67,18 +70,18 @@ const ChatRoom = () => {
       <View
         style={[
           styles.messageContainer,
-          item.user._id === 1 ? styles.sentMessage : styles.receivedMessage,
+          item.sender.userName === myContext.userNameValue ? styles.sentMessage : styles.receivedMessage,
         ]}
       >
-        {item.user._id !== 1 && (
+        {item.sender.userName !== myContext.userNameValue && (
           <Avatar.Image
             size={40}
-            source={{ uri: item.user.avatar }}
+            source={{ uri: item.sender.profilePicture }}
             style={styles.avatar}
           />
         )}
         <View style={styles.messageContent}>
-          <Text style={styles.messageText}>{item.text}</Text>
+          <Text style={styles.messageText}>{item.message}</Text>
           <Text style={styles.messageTime}>
             {new Date(item.createdAt).toLocaleTimeString()}
           </Text>
