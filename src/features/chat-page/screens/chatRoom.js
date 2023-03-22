@@ -9,24 +9,29 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import { Avatar, IconButton } from 'react-native-paper';
+import { Avatar, IconButton, Appbar, Menu, Provider } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import io from 'socket.io-client';
 import AppContext from '../../../components/AppContext';
 
-
-const ChatRoom = ({route}) => {
+const ChatRoom = ({ route, navigation }) => {
   const myContext = useContext(AppContext);
   const [messages, setMessages] = useState(route.params.messages);
   const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [visible, setVisible] = useState(false);
   const socketRef = useRef();
+
+  const openMenu = () => setVisible(true);
+
+  const closeMenu = () => setVisible(false);
 
   useEffect(() => {
     socketRef.current = io('http://10.0.2.2:8000');
 
     socketRef.current.on('sendMessage', (message) => {
-      setMessages([...messages, message]);
-      console.log(messages)
+      messages.push(message);
+      console.log(messages);
     });
 
     socketRef.current.on('typing', () => {
@@ -45,15 +50,12 @@ const ChatRoom = ({route}) => {
   const sendMessage = () => {
     if (text.trim() !== '') {
       const message = {
-        sender: {
-          userName: myContext.userNameValue,
-          profilePicture: myContext.profilePictureValue,
-        },
+        sender: myContext.userNameValue,
         message: text.trim(),
-        createdAt: new Date(),
+        conversationId: route.params.conversation._id,
       };
       socketRef.current.emit('sendMessage', message);
-      console.log("In the socket.io event", message);
+      console.log('In the socket.io event', message);
       setText('');
     }
   };
@@ -66,28 +68,45 @@ const ChatRoom = ({route}) => {
   };
 
   const renderItem = ({ item }) => {
-    return (
-      <View
-        style={[
-          styles.messageContainer,
-          item.sender.userName === myContext.userNameValue ? styles.sentMessage : styles.receivedMessage,
-        ]}
-      >
-        {item.sender.userName !== myContext.userNameValue && (
+
+    if(item.sender === myContext.userNameValue){
+      return (
+        <View
+          style={[styles.messageContainer, styles.sentMessage]}
+        >
+          <View style={styles.messageContent}>
+            <Text style={styles.messageText}>{item.message}</Text>
+            <Text style={styles.messageTime}>
+              {new Date(item.createdAt).toLocaleTimeString()}
+            </Text>
+          </View>
           <Avatar.Image
             size={40}
             source={{ uri: item.sender.profilePicture }}
             style={styles.avatar}
           />
-        )}
-        <View style={styles.messageContent}>
-          <Text style={styles.messageText}>{item.message}</Text>
-          <Text style={styles.messageTime}>
-            {new Date(item.createdAt).toLocaleTimeString()}
-          </Text>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View
+          style={[styles.messageContainer, styles.receivedMessage]}
+        >
+          <Avatar.Image
+            size={40}
+            source={{ uri: item.sender.profilePicture }}
+            style={styles.avatar}
+          />
+          <View style={styles.messageContent}>
+            <Text style={styles.messageText}>{item.message}</Text>
+            <Text style={styles.messageTime}>
+              {new Date(item.createdAt).toLocaleTimeString()}
+            </Text>
+          </View>
+        </View>
+      );
+    }
+   
   };
 
   const renderTextInput = () => {
@@ -111,11 +130,54 @@ const ChatRoom = ({route}) => {
 
   return (
     <View style={styles.container}>
+      <Appbar.Header  mode="center-aligned">
+       
+        <Appbar.BackAction
+          onPress={() => {
+            navigation.push('ConversationsLog');
+          }}
+        />
+        <Appbar.Content title={route.params.title} />
+        <Provider>
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={
+            <Appbar.Action
+              icon="dots-vertical"
+              color="black"
+              onPress={openMenu}
+            />
+          }
+        >
+          <Menu.Item
+            onPress={() => {
+              navigation.push('Profile', {
+                title: route.params.title,
+                userId: route.params.userId,
+              });
+            }}
+            title="View Profile"
+          />
+          <Menu.Item
+            onPress={() => {
+              navigation.push('BlockUser', {
+                title: route.params.title,
+                userId: route.params.userId,
+              });
+            }}
+            title="Block User"
+          />
+        </Menu>
+        </Provider>
+      </Appbar.Header>
+
+      
       <FlatList
         data={messages}
         renderItem={renderItem}
-        keyExtractor={(item) => item._id.toString()}
         inverted={true}
+        keyExtractor={(item) => item._id.toString()}
         contentContainerStyle={styles.messagesContainer}
       />
       {isTyping && <Text style={styles.typingMessage}>User is typing...</Text>}
@@ -192,5 +254,3 @@ const styles = StyleSheet.create({
     borderTopColor: 'lightgray',
   },
 });
-
-
