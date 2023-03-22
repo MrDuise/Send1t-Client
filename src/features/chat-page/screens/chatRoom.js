@@ -22,10 +22,11 @@ const ChatRoom = ({route}) => {
   const socketRef = useRef();
 
   useEffect(() => {
-    socketRef.current = io('http://localhost:3000');
+    socketRef.current = io('http://10.0.2.2:8000');
 
-    socketRef.current.on('message', (message) => {
-      setMessages((messages) => [...messages, message]);
+    socketRef.current.on('sendMessage', (message) => {
+      setMessages([...messages, message]);
+      console.log(messages)
     });
 
     socketRef.current.on('typing', () => {
@@ -44,16 +45,15 @@ const ChatRoom = ({route}) => {
   const sendMessage = () => {
     if (text.trim() !== '') {
       const message = {
-        _id: messages.length + 1,
-        text: text.trim(),
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'User',
-          avatar: 'https://placeimg.com/140/140/any',
+        sender: {
+          userName: myContext.userNameValue,
+          profilePicture: myContext.profilePictureValue,
         },
+        message: text.trim(),
+        createdAt: new Date(),
       };
-      socketRef.current.emit('message', message);
+      socketRef.current.emit('sendMessage', message);
+      console.log("In the socket.io event", message);
       setText('');
     }
   };
