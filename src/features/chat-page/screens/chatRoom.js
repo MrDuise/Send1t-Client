@@ -31,8 +31,8 @@ const ChatRoom = ({ route, navigation }) => {
 
     socketRef.current.on('sendMessage', (message) => {
       messages.push(message);
+
       
-      console.log(messages);
     });
 
     socketRef.current.on('typing', () => {
@@ -69,12 +69,9 @@ const ChatRoom = ({ route, navigation }) => {
   };
 
   const renderItem = ({ item }) => {
-
-    if(item.sender === myContext.userNameValue){
+    if (item.sender === myContext.userNameValue) {
       return (
-        <View
-          style={[styles.messageContainer, styles.sentMessage]}
-        >
+        <View style={[styles.messageContainer, styles.sentMessage]}>
           <View style={styles.messageContent}>
             <Text style={styles.messageText}>{item.message}</Text>
             <Text style={styles.messageTime}>
@@ -90,9 +87,7 @@ const ChatRoom = ({ route, navigation }) => {
       );
     } else {
       return (
-        <View
-          style={[styles.messageContainer, styles.receivedMessage]}
-        >
+        <View style={[styles.messageContainer, styles.receivedMessage]}>
           <Avatar.Image
             size={40}
             source={{ uri: item.sender.profilePicture }}
@@ -107,7 +102,6 @@ const ChatRoom = ({ route, navigation }) => {
         </View>
       );
     }
-   
   };
 
   const renderTextInput = () => {
@@ -131,8 +125,7 @@ const ChatRoom = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Appbar.Header  mode="center-aligned">
-       
+      <Appbar.Header mode="center-aligned">
         <Appbar.BackAction
           onPress={() => {
             navigation.push('ConversationsLog');
@@ -140,53 +133,52 @@ const ChatRoom = ({ route, navigation }) => {
         />
         <Appbar.Content title={route.params.title} />
         <Provider>
-        <Menu
-          visible={visible}
-          onDismiss={closeMenu}
-          anchor={
-            <Appbar.Action
-              icon="dots-vertical"
-              color="black"
-              onPress={openMenu}
+          <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            anchor={
+              <Appbar.Action
+                icon="dots-vertical"
+                color="black"
+                onPress={openMenu}
+              />
+            }
+          >
+            <Menu.Item
+              onPress={() => {
+                navigation.push('Profile', {
+                  title: route.params.title,
+                  userId: route.params.userId,
+                });
+              }}
+              title="View Profile"
             />
-          }
-        >
-          <Menu.Item
-            onPress={() => {
-              navigation.push('Profile', {
-                title: route.params.title,
-                userId: route.params.userId,
-              });
-            }}
-            title="View Profile"
-          />
-          <Menu.Item
-            onPress={() => {
-              navigation.push('BlockUser', {
-                title: route.params.title,
-                userId: route.params.userId,
-              });
-            }}
-            title="Block User"
-          />
-        </Menu>
+            <Menu.Item
+              onPress={() => {
+                navigation.push('BlockUser', {
+                  title: route.params.title,
+                  userId: route.params.userId,
+                });
+              }}
+              title="Block User"
+            />
+          </Menu>
         </Provider>
       </Appbar.Header>
 
-      
       <FlatList
-      ref={(ref) => {
-        this.flatList = ref;
-      }
-      }
+        ref={(ref) => {
+          this.flatList = ref;
+        }}
         data={messages}
         renderItem={renderItem}
-        onLayout={() => {
-          this.flatList.scrollToEnd({ animated: true });
-        }}
+        
         keyExtractor={(item) => item._id.toString()}
         contentContainerStyle={styles.messagesContainer}
         onContentSizeChange={() => {
+          this.flatList.scrollToEnd({ animated: true });
+        }}
+        onLayout={() => {
           this.flatList.scrollToEnd({ animated: true });
         }}
       />
