@@ -6,13 +6,13 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { theme } from '../../../infrastructure/theme';
 
 import AppContext from '../../../components/AppContext';
 import ConversationList from '../components/conversation-list';
 
-import {getConversations} from '../../../infrastructure/backend/request';
+import { getConversations } from '../../../infrastructure/backend/request';
 /**
  *This screen will display all the conversations a user has had with other users
 Handles the logic for getting the conversations from the API then passes that to the Conversation List component to display them
@@ -20,8 +20,7 @@ Handles the logic for getting the conversations from the API then passes that to
  * @param {*} { Conversations }
  * @return {*} 
  */
-const ConversationsLog = ({navigation}) => {
-
+const ConversationsLog = ({ navigation }) => {
   const myContext = useContext(AppContext);
   const [Conversations, setConversations] = useState([]);
   const userName = myContext.userNameValue;
@@ -36,7 +35,13 @@ const ConversationsLog = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ConversationList conversationsList = {Conversations} nav={navigation}/>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => {}} />
+        <Appbar.Content title="Conversations" />
+        <Appbar.Action icon="calendar" onPress={() => {}} />
+        <Appbar.Action icon="magnify" onPress={() => {}} />
+      </Appbar.Header>
+      <ConversationList conversationsList={Conversations} nav={navigation} />
     </SafeAreaView>
   );
 };

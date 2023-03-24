@@ -28,17 +28,19 @@ export default function App() {
   const [userName, setUserName] = useState('');
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
+  const [user, setUser] = useState({});
 
   const userValues = {
     signedInValue: signedIn,
     userNameValue: userName,
-    //userValue: user,
+    userValue: user,
     conversationsValue: conversations,
     activeConversationValue: activeConversation,
     setUserName,
     setSignedIn,
     setConversations,
     setActiveConversation,
+    setUser,
   };
 
   useMemo(() => {}, [userValues]);
