@@ -31,6 +31,7 @@ const ChatRoom = ({ route, navigation }) => {
 
     socketRef.current.on('sendMessage', (message) => {
       messages.push(message);
+      
       console.log(messages);
     });
 
@@ -174,11 +175,20 @@ const ChatRoom = ({ route, navigation }) => {
 
       
       <FlatList
+      ref={(ref) => {
+        this.flatList = ref;
+      }
+      }
         data={messages}
         renderItem={renderItem}
-        inverted={true}
+        onLayout={() => {
+          this.flatList.scrollToEnd({ animated: true });
+        }}
         keyExtractor={(item) => item._id.toString()}
         contentContainerStyle={styles.messagesContainer}
+        onContentSizeChange={() => {
+          this.flatList.scrollToEnd({ animated: true });
+        }}
       />
       {isTyping && <Text style={styles.typingMessage}>User is typing...</Text>}
       <KeyboardAvoidingView
