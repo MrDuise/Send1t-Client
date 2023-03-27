@@ -6,7 +6,13 @@ import { theme } from '../../../infrastructure/theme';
 import { register } from '../../../infrastructure/backend/request';
 import Logo from '../../../components/Logo';
 
-//screen will not scroll when keyboard is open
+/**
+ * Register screen
+ * used to register a new user
+ * @param {*} { navigation } prop provided by react navigation. used to navigate to other screens
+ *
+ * @return {*} 
+ */
 const Register = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -16,13 +22,23 @@ const Register = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  //doesnot work, triggers the password error
-
-  const loginNavigate = () => {
+  
+/**
+ * navigates to the Login screen
+ *
+ */
+const loginNavigate = () => {
     navigation.navigate('Login');
   };
-
-  const handleRegister = async () => {
+/**
+ * takes the user entered information and sends it to the backend
+ * if the register is successful, it will navigate to the Login screen
+ * if the register is unsuccessful, it will alert the user
+ * and clear the form
+ *
+ * @return {*} 
+ */
+const handleRegister = async () => {
     if (
       username === '' ||
       password === '' ||
@@ -92,8 +108,14 @@ const Register = ({ navigation }) => {
 
     return passwordRegex.test(text);
   };
-
-  const handlePasswordChange = (text) => {
+/**
+ * handles the password change
+ * if the password is not empty and does not match the regex, it sets the password error to true
+ * if the password is empty or matches the regex, it sets the password error to false
+ *
+ * @param {*} text
+ */
+const handlePasswordChange = (text) => {
     setPassword(text);
     if (password !== '' && !checkPasswordRequirements(text)) {
       setPasswordError(true);

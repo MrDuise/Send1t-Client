@@ -12,9 +12,6 @@ import { getMessages } from '../../../infrastructure/backend/request';
  *
  * @return {*}
  */
-
-//TODO: add a prop to the conversation card that will allow the user to click on the card and view the conversation
-//TODO: set the message to be the last message sent in the conversation
 const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
   const [messages, setMessages] = useState([]);
   const [read, setRead] = useState(seen);
@@ -22,11 +19,20 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
   const [headerTitle, setTitle] = useState('');
   const { participants, isGroup, dateUpdated, admin } = conversation;
 
+  // If the conversation is a group conversation, the title will be the names of all the participants
+  // If the conversation is a one on one conversation, the title will be the name of the other participant
   const title = isGroup
     ? participants.map((participant) => participant.userName).join(', ')
     : participants[0];
 
   useEffect(() => {
+    /**
+     * Gets the messages from the API and sets the messages state
+     * If there are no messages, the messages state will be set to an empty array
+     * If there are messages, the messages state will be set to the messages returned from the API
+     * 
+     *
+     */
     const getMessagesFromAPI = async () => {
       const response = await getMessages(conversation._id);
 
@@ -37,9 +43,7 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
       setMessages(response);
       }
 
-      
-     
-
+      //sets the loading state to false so that the component will render
       setLoading(false);
     };
     getMessagesFromAPI();
@@ -47,6 +51,13 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
     setTitle(title);
   }, []);
 
+  /**
+   * Takes a conversation and navigates to the ChatRoom screen
+   * Passes the conversation and messages to the ChatRoom screen
+   * Passes the title of the conversation to the ChatRoom screen
+   *
+   * @param {*} conversation
+   */
   const readConvo = (conversation) => {
     setRead(true);
     console.log('Conversation: ', conversation);
@@ -55,14 +66,8 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
     nav.push('ChatRoom', { conversation: conversation, messages: messages, title: headerTitle });
   };
 
-  // If the conversation is a group conversation, the title will be the names of all the participants
-  // If the conversation is a one on one conversation, the title will be the name of the other participant
-
-  //TODO: the one on one conversation title will need work for the second participant
-  
-
-    
-
+  // If the messages are still loading, display a loading message
+  // If there are no messages, display a message saying there are no messages
   if (loading) {
     return <Text>Loading...</Text>;
   }

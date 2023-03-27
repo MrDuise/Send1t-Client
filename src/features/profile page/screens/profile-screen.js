@@ -3,8 +3,19 @@ import { View, Text, Image, StyleSheet, SafeAreaView } from 'react-native';
 import { Avatar, Badge, Button, Appbar } from 'react-native-paper';
 import AvatarIcon from '../../../components/Avatar';
 import AppContext from '../../../components/AppContext';
-
+/**
+ * This screen displays the users profile information
+ * This page is accessed by clicking on the profile icon in the bottom navigation bar
+ * current this page is a static page and does not display any information from the database
+ * @param {*} { navigation }
+ * @return {*} 
+ */
 const ProfilePage = ({ navigation }) => {
+
+  /**
+   * This function navigates to the friends list screen
+   *
+   */
   const seeFriends = () => {
     navigation.navigate('FriendsList');
   };
@@ -25,6 +36,7 @@ const ProfilePage = ({ navigation }) => {
           style={styles.image}
         />
         <View style={{ top: -60 }}>
+          //displays the users profile picture
           <AvatarIcon
             profilePic={{ uri: 'https://picsum.photos/200' }}
             onlineStatus={true}
@@ -35,6 +47,7 @@ const ProfilePage = ({ navigation }) => {
           <Text style={styles.usernameText}>John Doe</Text>
         </View>
         <View style={styles.tagLine}>
+          //displays the users tagline
           <Text style={styles.tagLineText}>
             Software Developer at XYZ Corp. I love coding and learning new
             things!

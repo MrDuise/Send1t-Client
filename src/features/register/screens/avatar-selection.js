@@ -10,12 +10,14 @@ const avatars = [
   { name: 'avatar5', image: require('../../../../assets/avatars/avatar5.png') },
     { name: 'avatar6', image: require('../../../../assets/avatars/avatar6.png') },
 ];
-
-const AvatarSelection = () => {
+/**
+ * Screen to select an avatar for the user
+ * This will be used as the profile picture
+ * @param {*} navigation
+ */
+const AvatarSelection = ({navigation}) => {
   const [selectedAvatar, setSelectedAvatar] = useState('');
 
-  //TODO: Add a function to handle the avatar selection
-  //AS react native paper avatar does not have an onPress event
   const handleAvatarSelect = (avatar) => {
     setSelectedAvatar(avatar);
   };
@@ -24,6 +26,8 @@ const AvatarSelection = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Select a Starter Profile Picture</Text>
       <View style={styles.avatarContainer}>
+        {//flatlist to render the avatars in a grid
+        }
         <FlatList
           data={avatars}
           columnWrapperStyle={{ justifyContent: 'space-between' }}
