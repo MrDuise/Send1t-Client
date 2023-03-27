@@ -17,13 +17,19 @@ import {
   getFriends,
   makeNewConversation,
 } from '../../../infrastructure/backend/request';
-
+/**
+ * @description This screen allows the user to select contacts to add to a new conversation
+ * @param {*} { navigation } allows the user to navigate to the chat screen
+ * @return {*}  - returns the screen
+ */
 const NewConversation = ({ navigation }) => {
   const myContext = useContext(AppContext);
 
   const [contacts, setContacts] = useState([]);
 
+  
   useEffect(() => {
+    //gets the contacts from the API and sets the state to the contacts
     const getContacts = async () => {
       const contacts = await getFriends();
       setContacts(contacts);
@@ -32,22 +38,28 @@ const NewConversation = ({ navigation }) => {
     getContacts();
   }, []);
 
-  const addParticipant = (contact) => {
-    participants.push(contact);
-    setClicked(true);
-    console.log(participants);
-  };
-
-  const makeConversation = async () => {
+  
+/**
+ * @description This function creates a new conversation and navigates to the chat screen
+ * 
+ *
+ */
+const makeConversation = async () => {
+    //checks if the conversation is a group chat or not by the number of participants
     let isGroup = myContext.participantsValue.length > 2 ? true : false;
     console.log(myContext.participantsValue);
+    //creates the conversation by calling the API
     const conversation = await makeNewConversation(
       myContext.participantsValue,
       isGroup
     );
+    //log the new conversation for testing
     console.log(conversation);
+    //sets the header title to the first participant in the conversation
     let headerTitle = conversation.participants[0].userName;
+    //resets the participants array in the app context
     myContext.participantsValue = [];
+    //navigates to the chat screen
     navigation.push('ChatRoom', {
       conversation: conversation,
       messages: [],

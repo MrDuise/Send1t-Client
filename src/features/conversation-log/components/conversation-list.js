@@ -3,7 +3,7 @@ import React from 'react'
 import ConversationCard from './conversation-card';
 /**
  * Lists all the conversations a user has had with other users
- *
+ * Renders a ConversationCard component for each conversation
  * @return {*} 
  */
 const ConversationList = ({conversationsList, nav}) => {

@@ -22,7 +22,13 @@ import NewConversation from './src/features/conversation-log/screens/newConversa
 const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
 //const Tab = createBottomTabNavigator();
-
+/**
+ * @description This is the main app component that holds the global state and the navigation
+ * @return {*}  - returns the app component
+ *
+ * @export
+ * @return {*} 
+ */
 export default function App() {
   //global state values
   const [signedIn, setSignedIn] = useState(false);
@@ -48,9 +54,6 @@ export default function App() {
   };
 
   useMemo(() => {}, [userValues]);
-
-  //current navigation stack does not work for nested calls
-  //https://reactnavigation.org/docs/nesting-navigators/#navigating-to-a-screen-in-a-nested-navigator
   return (
     <NavigationContainer>
       <AppContext.Provider value={userValues}>

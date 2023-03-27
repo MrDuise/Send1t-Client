@@ -9,23 +9,33 @@ import { login } from '../../../infrastructure/backend/request';
 
 import Logo from '../../../components/Logo';
 
+/**
+ *Login screen
+ *used to login to the app
+ * @param {*} { navigation } prop provided by react navigation. used to navigate to other screens
+ * @return {*} 
+ */
 const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
+  //gets the context from the AppContext
+  //this is used as a global state for the app
   const myContext = useContext(AppContext);
 
-  //takes the username and password and sends it to the backend
-  //if the login is successful, it will navigate to the ConversationsLog screen
+  /**
+   *takes the username and password and sends it to the backend
+   *if the login is successful, it will navigate to the ConversationsLog screen
+    *if the login is unsuccessful, it will alert the user
+   */
   const handleLogin = async () => {
     setLoading(true);
     try {
       const user = await login(myContext.userNameValue, password);
 
       if (user !== null && user !== undefined) {
+        //sets the global state to the user that was returned from the backend
         myContext.setSignedIn(true);
-
-        console.log(myContext.userNameValue);
         navigation.navigate('ConversationsLog');
       } else {
         alert('Invalid username or password');
@@ -39,6 +49,9 @@ const Login = ({ navigation }) => {
     setLoading(false);
   };
 
+  /**
+   * navigates to the Register screen
+   **/
   const registerNavigate = () => {
     navigation.navigate('Register');
   };

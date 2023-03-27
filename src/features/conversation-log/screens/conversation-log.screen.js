@@ -1,6 +1,4 @@
 import {
-  View,
-  Text,
   SafeAreaView,
   StyleSheet,
   Platform,
@@ -24,8 +22,10 @@ Handles the logic for getting the conversations from the API then passes that to
 const ConversationsLog = ({ navigation }) => {
   const myContext = useContext(AppContext);
   const [Conversations, setConversations] = useState([]);
+  //gets the username from the context and stores it in a variable
   const userName = myContext.userNameValue;
 
+  //gets the conversations from the API and sets the state to the conversations
   useEffect(() => {
     const getConversationsFromAPI = async () => {
       const conversations = await getConversations(userName);

@@ -1,5 +1,13 @@
 /** This Page handles all the api requests, so they can easily be called else where */
 
+
+/**
+ * calls the API to Login the user
+ *
+ * @param {*} userName
+ * @param {*} password
+ * @return {*} 
+ */
 const login = async (userName, password) => {
   try {
     const response = await fetch('http://10.0.2.2:8000/v1/users/login/local', {
@@ -32,6 +40,11 @@ const googleLogin = () => {};
  */
 const getStatus = () => {};
 
+/**
+ * Calls the API to logout the user
+ *
+ * @return {*} 
+ */
 const logOut = async () => {
   try {
     const response = fetch(`http://localhost:8000/v1/users/logout`, {
@@ -157,7 +170,16 @@ const getMessages = async (conversationId) => {
     throw err;
   }
 };
-
+/**
+ * Calls the API to register a new user
+ *
+ * @param {*} userName
+ * @param {*} password
+ * @param {*} firstName
+ * @param {*} lastName
+ * @param {*} email
+ * @return {*} 
+ */
 const register = async (userName, password, firstName, lastName, email) => {
   try {
     const response = await fetch('http://10.0.2.2:8000/v1/users/register/', {
@@ -316,7 +338,12 @@ const getFriendRequests = async (userName) => {
   }
 };
 
-//Needs testing
+/**
+ * Calls the API to get the friends of a user
+ * 
+ *
+ * @return {*} - an array of friends
+ */
 const getFriends = async () => {
   try {
     const response = await fetch('http://10.0.2.2:8000/v1/users/contacts', {
