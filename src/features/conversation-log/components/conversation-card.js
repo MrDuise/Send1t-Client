@@ -30,7 +30,15 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
     const getMessagesFromAPI = async () => {
       const response = await getMessages(conversation._id);
 
+      if(response === null || response.length === 0 || response === undefined){
+        setMessages([]);
+      }
+      else if(response.length > 0) {
       setMessages(response);
+      }
+
+      
+     
 
       setLoading(false);
     };
@@ -58,12 +66,19 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
   if (loading) {
     return <Text>Loading...</Text>;
   }
-
-  let displayMessage = messages[0].message;
- 
-  if (displayMessage.length > 20) {
+  let displayMessage;
+  if(messages === null || messages.length === 0 || messages === undefined){
+    displayMessage = 'No messages yet';
+  }
+  else{
+    displayMessage = messages[messages.length - 1].message;
+     if (displayMessage.length > 20) {
     displayMessage = displayMessage.substring(0, 20) + '...';
   }
+  }
+ 
+ 
+ 
 
   return (
     <Pressable onPress={() => readConvo(conversation)}>

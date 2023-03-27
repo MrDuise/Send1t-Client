@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, StyleSheet, SafeAreaView } from 'react-native';
-import { Avatar, Badge, Button } from 'react-native-paper';
+import { Avatar, Badge, Button, Appbar } from 'react-native-paper';
 import AvatarIcon from '../../../components/Avatar';
 import AppContext from '../../../components/AppContext';
 

@@ -5,10 +5,11 @@ import {
   StyleSheet,
   Platform,
   StatusBar,
+
 } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
 import { theme } from '../../../infrastructure/theme';
-
+import { Appbar, FAB } from 'react-native-paper';
 import AppContext from '../../../components/AppContext';
 import ConversationList from '../components/conversation-list';
 
@@ -42,6 +43,7 @@ const ConversationsLog = ({ navigation }) => {
         <Appbar.Action icon="magnify" onPress={() => {}} />
       </Appbar.Header>
       <ConversationList conversationsList={Conversations} nav={navigation} />
+      <FAB icon="plus" style={styles.fab} onPress={() => navigation.navigate('NewConversation')} />
     </SafeAreaView>
   );
 };
@@ -55,4 +57,11 @@ const styles = StyleSheet.create({
 
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+
+  }
 });

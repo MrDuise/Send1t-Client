@@ -42,10 +42,11 @@ const ChatRoom = ({ route, navigation }) => {
     socketRef.current.on('stop typing', () => {
       setIsTyping(false);
     });
-
+    
     return () => {
       socketRef.current.disconnect();
     };
+    
   }, []);
 
   const sendMessage = () => {
@@ -172,7 +173,9 @@ const ChatRoom = ({ route, navigation }) => {
         }}
         data={messages}
         renderItem={renderItem}
-        
+        ListEmptyComponent={() => (
+          <Text style={styles.noMessages}>No messages</Text>
+        )}
         keyExtractor={(item) => item._id.toString()}
         contentContainerStyle={styles.messagesContainer}
         onContentSizeChange={() => {
