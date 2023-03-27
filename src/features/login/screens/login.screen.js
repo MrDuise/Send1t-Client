@@ -19,7 +19,6 @@ const Login = ({ navigation }) => {
   //if the login is successful, it will navigate to the ConversationsLog screen
   const handleLogin = async () => {
     setLoading(true);
-    console.log(myContext.userNameValue, password);
     try {
       const user = await login(myContext.userNameValue, password);
 

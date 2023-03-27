@@ -17,6 +17,7 @@ import EditProfile from './src/features/editProfile/screens/EditProfile';
 import ChatRoom from './src/features/chat-page/screens/chatRoom';
 import ProfilePage from './src/features/profile page/screens/profile-screen';
 import AvatarSelection from './src/features/register/screens/avatar-selection';
+import NewConversation from './src/features/conversation-log/screens/newConversation';
 
 const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
@@ -28,17 +29,22 @@ export default function App() {
   const [userName, setUserName] = useState('');
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
+  const [user, setUser] = useState({});
+  const [participants, setParticipants] = useState([]);
 
   const userValues = {
     signedInValue: signedIn,
     userNameValue: userName,
-    //userValue: user,
+    userValue: user,
     conversationsValue: conversations,
     activeConversationValue: activeConversation,
+    participantsValue: participants,
     setUserName,
     setSignedIn,
     setConversations,
     setActiveConversation,
+    setUser,
+    setParticipants,
   };
 
   useMemo(() => {}, [userValues]);
@@ -65,6 +71,7 @@ export default function App() {
             <Stack.Screen name="ChatRoom" component={ChatRoom} />
             <Stack.Screen name="Profile" component={ProfilePage} />
             <Stack.Screen name="AvatarSelection" component={AvatarSelection} />
+            <Stack.Screen name="NewConversation" component={NewConversation} />
           </Stack.Navigator>
           <StatusBar style="auto" />
         </SafeAreaView>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Pressable } from 'react-native';
 import { Avatar, Button, Text, IconButton } from 'react-native-paper';
 
 const avatars = [
@@ -30,7 +30,7 @@ const AvatarSelection = () => {
           keyExtractor={(item) => item.name}
           numColumns={3}
           renderItem={({ item }) => (
-           
+           <Pressable onPress={() => handleAvatarSelect(item)}>
             <Avatar.Image
               source={item.image}
               size={80}
@@ -38,9 +38,8 @@ const AvatarSelection = () => {
                 styles.avatar,
                 selectedAvatar === item && styles.selectedAvatar,
               ]}
-              onPress={() => handleAvatarSelect(item)}
             />
-           
+           </Pressable>
           )}
         />
         

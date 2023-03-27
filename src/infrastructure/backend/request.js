@@ -15,7 +15,6 @@ const login = async (userName, password) => {
     });
     const data = await response.json();
     if (data) {
-      //console.log("in the login request handler", data);
       const user = data.userName;
       return user;
     } else {
@@ -94,7 +93,7 @@ const getConversations = async (userNameValue) => {
 const makeNewConversation = async (participants, isGroup) => {
   try {
     const response = await fetch(
-      'http:/10.2.2:8000/v1/conversations/createConversation',
+      'http://10.0.2.2:8000/v1/conversations/createConversation',
       {
         method: 'POST',
         credentials: 'include',
@@ -145,12 +144,17 @@ const getMessages = async (conversationId) => {
 
     const data = await response.json();
     if (data) {
-      return data.messageList;
+     if(data.messages.docs.length > 0){
+      return data.messages.docs;
+      }else{
+        return null;
+      }
     } else {
-      return null;
+      throw new Error('failed to get messages');
     }
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 
@@ -315,7 +319,7 @@ const getFriendRequests = async (userName) => {
 //Needs testing
 const getFriends = async () => {
   try {
-    const response = await fetch('http://localhost:8000/v1/users/contacts', {
+    const response = await fetch('http://10.0.2.2:8000/v1/users/contacts', {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -343,4 +347,6 @@ module.exports = {
   getConversations,
   getMessages,
   register,
+  getFriends,
+  makeNewConversation,
 };

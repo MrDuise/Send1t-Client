@@ -1,9 +1,10 @@
-import { View, StyleSheet } from 'react-native';
-import React from 'react';
+import { View, StyleSheet, Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
 
 import { theme } from '../../../infrastructure/theme';
 import { Card, Text, Avatar } from 'react-native-paper';
-import AvatarIcon from '../../../components/Avatar'
+import AvatarIcon from '../../../components/Avatar';
+import { getMessages } from '../../../infrastructure/backend/request';
 /**
  * Takes a conversation and displays it in a card format with the contacts name and the most recent message sent
  * Also displays the time the conversation was updated
@@ -14,44 +15,93 @@ import AvatarIcon from '../../../components/Avatar'
 
 //TODO: add a prop to the conversation card that will allow the user to click on the card and view the conversation
 //TODO: set the message to be the last message sent in the conversation
-const ConversationCard = ({ conversation = {} }) => {
-  const {
-    participants = [{ userName: 'JohnSmith' }, { userName: 'MikeDo' }],
-    messages = ['Hello There', 'Hey hows it going man?'],
-    isGroup = false,
-    dateUpdated = '01/05/23',
-    admin = 'JohnSmith',
-  } = conversation;
+const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
+  const [messages, setMessages] = useState([]);
+  const [read, setRead] = useState(seen);
+  const [loading, setLoading] = useState(true);
+  const [headerTitle, setTitle] = useState('');
+  const { participants, isGroup, dateUpdated, admin } = conversation;
+
+  const title = isGroup
+    ? participants.map((participant) => participant.userName).join(', ')
+    : participants[0];
+
+  useEffect(() => {
+    const getMessagesFromAPI = async () => {
+      const response = await getMessages(conversation._id);
+
+      if(response === null || response.length === 0 || response === undefined){
+        setMessages([]);
+      }
+      else if(response.length > 0) {
+      setMessages(response);
+      }
+
+      
+     
+
+      setLoading(false);
+    };
+    getMessagesFromAPI();
+
+    setTitle(title);
+  }, []);
+
+  const readConvo = (conversation) => {
+    setRead(true);
+    console.log('Conversation: ', conversation);
+    console.log('Messages: ', messages);
+
+    nav.push('ChatRoom', { conversation: conversation, messages: messages, title: headerTitle });
+  };
 
   // If the conversation is a group conversation, the title will be the names of all the participants
   // If the conversation is a one on one conversation, the title will be the name of the other participant
 
   //TODO: the one on one conversation title will need work for the second participant
-  const title = isGroup
-    ? participants.map((participant) => participant.userName).join(', ')
-    : participants[0];
+  
+
+    
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+  let displayMessage;
+  if(messages === null || messages.length === 0 || messages === undefined){
+    displayMessage = 'No messages yet';
+  }
+  else{
+    displayMessage = messages[messages.length - 1].message;
+     if (displayMessage.length > 20) {
+    displayMessage = displayMessage.substring(0, 20) + '...';
+  }
+  }
+ 
+ 
+ 
+
   return (
-    <Card.Title
-      style={styles.card}
-      title={title}
-      subtitle={dateUpdated}
-      left={(props) => <AvatarIcon />}
-      right={(props) => <Text {...props}>{messages[1]}</Text>}
-    />
+    <Pressable onPress={() => readConvo(conversation)}>
+      <Card.Title
+        style={styles(read).card}
+        title={headerTitle}
+        subtitle={conversation.updatedAt}
+        left={(props) => <AvatarIcon />}
+        right={(props) => <Text {...props}>{displayMessage}</Text>}
+      />
+    </Pressable>
   );
 };
 
 export default ConversationCard;
 
-const styles = StyleSheet.create({
-  card: {
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: theme.colors.ui.primary,
-    borderRadius: 10,
-    flexDirection: 'row',
-    backgroundColor: theme.colors.bg.primary,
-    padding: theme.sizes[1],
-    fontSize: theme.fontSizes[1],
-  },
-});
+const styles = (read) =>
+  StyleSheet.create({
+    card: {
+      flexDirection: 'row',
+      backgroundColor:
+        read === true ? theme.colors.bg.primary : theme.colors.bg.secondary,
+      padding: theme.sizes[1],
+      fontSize: theme.fontSizes[1],
+    },
+  });

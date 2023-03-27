@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Image, StyleSheet, SafeAreaView } from 'react-native';
-import { Avatar, Badge, Button } from 'react-native-paper';
+import { Avatar, Badge, Button, Appbar } from 'react-native-paper';
 import AvatarIcon from '../../../components/Avatar';
+import AppContext from '../../../components/AppContext';
 
-const ProfilePage = () => {
+const ProfilePage = ({ navigation }) => {
+  const seeFriends = () => {
+    navigation.navigate('FriendsList');
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 20, paddingTop: 30 }}>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => {}} />
+        <Appbar.Content title="Profile" />
+        <Appbar.Action icon="calendar" onPress={() => {}} />
+        <Appbar.Action icon="magnify" onPress={() => {}} />
+      </Appbar.Header>
       <View style={styles.container}>
         <Image
           source={{
@@ -13,7 +24,7 @@ const ProfilePage = () => {
           }}
           style={styles.image}
         />
-        <View style={{ top: -60}}>
+        <View style={{ top: -60 }}>
           <AvatarIcon
             profilePic={{ uri: 'https://picsum.photos/200' }}
             onlineStatus={true}
@@ -35,7 +46,7 @@ const ProfilePage = () => {
             style={styles.optionsButton}
             labelStyle={styles.optionsButtonLabel}
             icon="pencil"
-            onPress={console.log("Clicked edit button")}
+            onPress={console.log('Clicked edit button')}
           >
             Edit Profile
           </Button>
@@ -56,6 +67,7 @@ const ProfilePage = () => {
             mode="text"
             labelStyle={{ color: '#0366d6' }}
             uppercase={false}
+            onPress={seeFriends}
           >
             See All
           </Button>
@@ -76,7 +88,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
     overflow: 'hidden',
-   
   },
   image: {
     width: 350,
@@ -86,7 +97,7 @@ const styles = StyleSheet.create({
 
   usernameHeader: {
     alignItems: 'center',
-    
+
     top: -30,
   },
   usernameText: {

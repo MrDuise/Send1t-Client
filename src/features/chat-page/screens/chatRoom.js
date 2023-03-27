@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,20 +9,30 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import { Avatar, IconButton } from 'react-native-paper';
+import { Avatar, IconButton, Appbar, Menu, Provider } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import io from 'socket.io-client';
+import AppContext from '../../../components/AppContext';
 
-const ChatRoom = () => {
-  const [messages, setMessages] = useState([]);
+const ChatRoom = ({ route, navigation }) => {
+  const myContext = useContext(AppContext);
+  const [messages, setMessages] = useState(route.params.messages);
   const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [visible, setVisible] = useState(false);
   const socketRef = useRef();
 
-  useEffect(() => {
-    socketRef.current = io('http://localhost:3000');
+  const openMenu = () => setVisible(true);
 
-    socketRef.current.on('message', (message) => {
-      setMessages((messages) => [...messages, message]);
+  const closeMenu = () => setVisible(false);
+
+  useEffect(() => {
+    socketRef.current = io('http://10.0.2.2:8000');
+
+    socketRef.current.on('sendMessage', (message) => {
+      messages.push(message);
+
+      
     });
 
     socketRef.current.on('typing', () => {
@@ -32,25 +42,22 @@ const ChatRoom = () => {
     socketRef.current.on('stop typing', () => {
       setIsTyping(false);
     });
-
+    
     return () => {
       socketRef.current.disconnect();
     };
+    
   }, []);
 
   const sendMessage = () => {
     if (text.trim() !== '') {
       const message = {
-        _id: messages.length + 1,
-        text: text.trim(),
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'User',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
+        sender: myContext.userNameValue,
+        message: text.trim(),
+        conversationId: route.params.conversation._id,
       };
-      socketRef.current.emit('message', message);
+      socketRef.current.emit('sendMessage', message);
+      console.log('In the socket.io event', message);
       setText('');
     }
   };
@@ -63,28 +70,39 @@ const ChatRoom = () => {
   };
 
   const renderItem = ({ item }) => {
-    return (
-      <View
-        style={[
-          styles.messageContainer,
-          item.user._id === 1 ? styles.sentMessage : styles.receivedMessage,
-        ]}
-      >
-        {item.user._id !== 1 && (
+    if (item.sender === myContext.userNameValue) {
+      return (
+        <View style={[styles.messageContainer, styles.sentMessage]}>
+          <View style={styles.messageContent}>
+            <Text style={styles.messageText}>{item.message}</Text>
+            <Text style={styles.messageTime}>
+              {new Date(item.createdAt).toLocaleTimeString()}
+            </Text>
+          </View>
           <Avatar.Image
             size={40}
-            source={{ uri: item.user.avatar }}
+            source={{ uri: item.sender.profilePicture }}
             style={styles.avatar}
           />
-        )}
-        <View style={styles.messageContent}>
-          <Text style={styles.messageText}>{item.text}</Text>
-          <Text style={styles.messageTime}>
-            {new Date(item.createdAt).toLocaleTimeString()}
-          </Text>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={[styles.messageContainer, styles.receivedMessage]}>
+          <Avatar.Image
+            size={40}
+            source={{ uri: item.sender.profilePicture }}
+            style={styles.avatar}
+          />
+          <View style={styles.messageContent}>
+            <Text style={styles.messageText}>{item.message}</Text>
+            <Text style={styles.messageTime}>
+              {new Date(item.createdAt).toLocaleTimeString()}
+            </Text>
+          </View>
+        </View>
+      );
+    }
   };
 
   const renderTextInput = () => {
@@ -108,12 +126,64 @@ const ChatRoom = () => {
 
   return (
     <View style={styles.container}>
+      <Appbar.Header mode="center-aligned">
+        <Appbar.BackAction
+          onPress={() => {
+            navigation.push('ConversationsLog');
+          }}
+        />
+        <Appbar.Content title={route.params.title} />
+        <Provider>
+          <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            anchor={
+              <Appbar.Action
+                icon="dots-vertical"
+                color="black"
+                onPress={openMenu}
+              />
+            }
+          >
+            <Menu.Item
+              onPress={() => {
+                navigation.push('Profile', {
+                  title: route.params.title,
+                  userId: route.params.userId,
+                });
+              }}
+              title="View Profile"
+            />
+            <Menu.Item
+              onPress={() => {
+                navigation.push('BlockUser', {
+                  title: route.params.title,
+                  userId: route.params.userId,
+                });
+              }}
+              title="Block User"
+            />
+          </Menu>
+        </Provider>
+      </Appbar.Header>
+
       <FlatList
+        ref={(ref) => {
+          this.flatList = ref;
+        }}
         data={messages}
         renderItem={renderItem}
+        ListEmptyComponent={() => (
+          <Text style={styles.noMessages}>No messages</Text>
+        )}
         keyExtractor={(item) => item._id.toString()}
-        inverted={true}
         contentContainerStyle={styles.messagesContainer}
+        onContentSizeChange={() => {
+          this.flatList.scrollToEnd({ animated: true });
+        }}
+        onLayout={() => {
+          this.flatList.scrollToEnd({ animated: true });
+        }}
       />
       {isTyping && <Text style={styles.typingMessage}>User is typing...</Text>}
       <KeyboardAvoidingView
@@ -189,5 +259,3 @@ const styles = StyleSheet.create({
     borderTopColor: 'lightgray',
   },
 });
-
-
