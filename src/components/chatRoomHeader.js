@@ -16,7 +16,7 @@ const chatRoomHeader = ({ navigation, route }) => {
         }}
       />
       <Appbar.Content title={route.params.title} />
-      <Appbar.Action icon="dots-vertical" color="black" onPress={openMenu} />
+     
       <Menu
         visible={visible}
         onDismiss={closeMenu}
