@@ -27,12 +27,9 @@ const ChatRoom = ({ route, navigation }) => {
   const [messages, setMessages] = useState(route.params.messages);
   const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [visible, setVisible] = useState(false);
+
   const socketRef = useRef();
 
-  const openMenu = () => setVisible(true);
-
-  const closeMenu = () => setVisible(false);
 
   useEffect(() => {
     //connects to the socket.io server
@@ -153,46 +150,7 @@ const renderTextInput = () => {
 //it renders the appbar, the flatlist, and the text input
   return (
     <View style={styles.container}>
-      <Appbar.Header mode="center-aligned">
-        <Appbar.BackAction
-          onPress={() => {
-            navigation.push('ConversationsLog');
-          }}
-        />
-        <Appbar.Content title={route.params.title} />
-        <Provider>
-          <Menu
-            visible={visible}
-            onDismiss={closeMenu}
-            anchor={
-              <Appbar.Action
-                icon="dots-vertical"
-                color="black"
-                onPress={openMenu}
-              />
-            }
-          >
-            <Menu.Item
-              onPress={() => {
-                navigation.push('Profile', {
-                  title: route.params.title,
-                  userId: route.params.userId,
-                });
-              }}
-              title="View Profile"
-            />
-            <Menu.Item
-              onPress={() => {
-                navigation.push('BlockUser', {
-                  title: route.params.title,
-                  userId: route.params.userId,
-                });
-              }}
-              title="Block User"
-            />
-          </Menu>
-        </Provider>
-      </Appbar.Header>
+   
 
       <FlatList
         ref={(ref) => {

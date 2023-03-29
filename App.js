@@ -18,6 +18,7 @@ import ChatRoom from './src/features/chat-page/screens/chatRoom';
 import ProfilePage from './src/features/profile page/screens/profile-screen';
 import AvatarSelection from './src/features/register/screens/avatar-selection';
 import NewConversation from './src/features/conversation-log/screens/newConversation';
+import ChatRoomHeader from './src/components/chatRoomHeader';
 
 const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
@@ -59,6 +60,7 @@ export default function App() {
       <AppContext.Provider value={userValues}>
         <SafeAreaView style={styles.container}>
           <Stack.Navigator initialRouteName="Home">
+        
             <Stack.Screen name="Home" component={WelcomePage} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
@@ -71,7 +73,10 @@ export default function App() {
               component={ConversationCard}
             />
             <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="ChatRoom" component={ChatRoom} />
+            <Stack.Screen name="ChatRoom" component={ChatRoom} options={({ navigation, route }) => ({header: () => 
+              <ChatRoomHeader navigation={navigation} route={route} />,
+             
+            })} />
             <Stack.Screen name="Profile" component={ProfilePage} />
             <Stack.Screen name="AvatarSelection" component={AvatarSelection} />
             <Stack.Screen name="NewConversation" component={NewConversation} />
