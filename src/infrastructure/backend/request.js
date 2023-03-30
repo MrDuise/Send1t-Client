@@ -47,7 +47,7 @@ const getStatus = () => {};
  */
 const logOut = async () => {
   try {
-    const response = fetch(`http://localhost:8000/v1/users/logout`, {
+    const response = fetch(`http://10.0.2.2:8000/v1/users/logout`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

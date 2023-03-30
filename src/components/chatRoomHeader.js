@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
-import { Appbar, Menu, Provider } from 'react-native-paper';
+import { Appbar, Menu, Provider, Modal } from 'react-native-paper';
 
-const chatRoomHeader = ({ navigation, route }) => {
+const ChatRoomHeader = ({ navigation, route }) => {
   const [visible, setVisible] = useState(false);
 
   const openMenu = () => setVisible(true);
@@ -26,11 +26,12 @@ const chatRoomHeader = ({ navigation, route }) => {
         <Menu.Item onPress={() => console.log('Option 2 pressed')} title="Option 2" />
         <Menu.Item onPress={() => console.log('Option 3 pressed')} title="Option 3" />
       </Menu>
+      
     </Appbar.Header>
     
   );
 };
 
-export default chatRoomHeader;
+export default ChatRoomHeader;
 
 const styles = StyleSheet.create({});

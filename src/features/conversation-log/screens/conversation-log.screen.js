@@ -36,12 +36,7 @@ const ConversationsLog = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={() => {}} />
-        <Appbar.Content title="Conversations" />
-        <Appbar.Action icon="calendar" onPress={() => {}} />
-        <Appbar.Action icon="magnify" onPress={() => {}} />
-      </Appbar.Header>
+      
       <ConversationList conversationsList={Conversations} nav={navigation} />
       <FAB icon="plus" style={styles.fab} onPress={() => navigation.navigate('NewConversation')} />
     </SafeAreaView>

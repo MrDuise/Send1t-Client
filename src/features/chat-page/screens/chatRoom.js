@@ -13,6 +13,7 @@ import { Avatar, IconButton, Appbar, Menu, Provider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import io from 'socket.io-client';
 import AppContext from '../../../components/AppContext';
+import { getMessages } from '../../../infrastructure/backend/request';
 /**
  * @description This screen allows the user to chat with other users
  * This is the most important screen in the app as well as the most complex
@@ -24,14 +25,31 @@ import AppContext from '../../../components/AppContext';
  */
 const ChatRoom = ({ route, navigation }) => {
   const myContext = useContext(AppContext);
-  const [messages, setMessages] = useState(route.params.messages);
+  const [messages, setMessages] = useState([]);
   const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const socketRef = useRef();
 
+  
 
   useEffect(() => {
+    const getMessagesFromAPI = async () => {
+      const response = await getMessages(route.params.conversation._id);
+
+      if(response === null || response.length === 0 || response === undefined){
+        setMessages([]);
+      }
+      else if(response.length > 0) {
+      setMessages(response);
+      }
+
+      //sets the loading state to false so that the component will render
+      setLoading(false);
+    };
+    getMessagesFromAPI();
+
     //connects to the socket.io server
     socketRef.current = io('http://10.0.2.2:8000');
 
@@ -39,11 +57,12 @@ const ChatRoom = ({ route, navigation }) => {
     //this is the response from the server after the client sends a message
     socketRef.current.on('sendMessage', (message) => {
       messages.push(message);
+      setMessages((messages) => [...messages, message]);
     });
     //listens for the typing event
     socketRef.current.on('typing', () => {
       setIsTyping(true);
-    });
+    }, []);
 
     socketRef.current.on('stop typing', () => {
       setIsTyping(false);
@@ -148,6 +167,16 @@ const renderTextInput = () => {
   };
 //this is the main return statement
 //it renders the appbar, the flatlist, and the text input
+
+if(loading === true){
+  return (
+   <Text> Loading </Text>
+  );
+}
+else{
+
+
+
   return (
     <View style={styles.container}>
    
@@ -181,6 +210,7 @@ const renderTextInput = () => {
     </View>
   );
 };
+}
 
 export default ChatRoom;
 

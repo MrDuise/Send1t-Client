@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
+import { Appbar, Menu, Provider, Modal } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState, useMemo } from 'react';
@@ -19,6 +20,7 @@ import ProfilePage from './src/features/profile page/screens/profile-screen';
 import AvatarSelection from './src/features/register/screens/avatar-selection';
 import NewConversation from './src/features/conversation-log/screens/newConversation';
 import ChatRoomHeader from './src/components/chatRoomHeader';
+import ConvoLogHeader from './src/components/ConvoLogHeader'
 
 const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
@@ -56,6 +58,7 @@ export default function App() {
 
   useMemo(() => {}, [userValues]);
   return (
+    <Provider>
     <NavigationContainer>
       <AppContext.Provider value={userValues}>
         <SafeAreaView style={styles.container}>
@@ -67,6 +70,9 @@ export default function App() {
             <Stack.Screen
               name="ConversationsLog"
               component={ConversationsLog}
+              options={({ navigation, route }) => ({header: () =>
+                <ConvoLogHeader navigation={navigation} route={route} />,
+              })}
             />
             <Stack.Screen
               name="ConversationCard"
@@ -85,6 +91,7 @@ export default function App() {
         </SafeAreaView>
       </AppContext.Provider>
     </NavigationContainer>
+    </Provider>
   );
 }
 

@@ -1,10 +1,11 @@
 import { View, StyleSheet, Pressable } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { theme } from '../../../infrastructure/theme';
 import { Card, Text, Avatar } from 'react-native-paper';
 import AvatarIcon from '../../../components/Avatar';
 import { getMessages } from '../../../infrastructure/backend/request';
+import AppContext from '../../../components/AppContext';
 /**
  * Takes a conversation and displays it in a card format with the contacts name and the most recent message sent
  * Also displays the time the conversation was updated
@@ -13,42 +14,35 @@ import { getMessages } from '../../../infrastructure/backend/request';
  * @return {*}
  */
 const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
+  const myContext = useContext(AppContext);
   const [messages, setMessages] = useState([]);
   const [read, setRead] = useState(seen);
   const [loading, setLoading] = useState(true);
-  const [headerTitle, setTitle] = useState('');
+  const [headerTitle, setHeaderTitle] = useState('');
   const { participants, isGroup, dateUpdated, admin } = conversation;
 
   // If the conversation is a group conversation, the title will be the names of all the participants
   // If the conversation is a one on one conversation, the title will be the name of the other participant
-  const title = isGroup
-    ? participants.map((participant) => participant.userName).join(', ')
-    : participants[0];
+
+  const setTitle = () => {
+    let title = participants[0];
+    if (isGroup === true) {
+      title = participants.map((participant) => participant).join(', ');
+      if (title.length > 20) {
+        title = title.substring(0, 20) + '...';
+      }
+    } else {
+      if (title === myContext.userNameValue) {
+        title = participants[1];
+      }
+    }
+
+    setHeaderTitle(title);
+  };
 
   useEffect(() => {
-    /**
-     * Gets the messages from the API and sets the messages state
-     * If there are no messages, the messages state will be set to an empty array
-     * If there are messages, the messages state will be set to the messages returned from the API
-     * 
-     *
-     */
-    const getMessagesFromAPI = async () => {
-      const response = await getMessages(conversation._id);
-
-      if(response === null || response.length === 0 || response === undefined){
-        setMessages([]);
-      }
-      else if(response.length > 0) {
-      setMessages(response);
-      }
-
-      //sets the loading state to false so that the component will render
-      setLoading(false);
-    };
-    getMessagesFromAPI();
-
-    setTitle(title);
+    setTitle();
+    setLoading(false);
   }, []);
 
   /**
@@ -63,7 +57,7 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
     console.log('Conversation: ', conversation);
     console.log('Messages: ', messages);
 
-    nav.push('ChatRoom', { conversation: conversation, messages: messages, title: headerTitle });
+    nav.push('ChatRoom', { conversation: conversation, title: headerTitle });
   };
 
   // If the messages are still loading, display a loading message
@@ -71,19 +65,10 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
   if (loading) {
     return <Text>Loading...</Text>;
   }
-  let displayMessage;
-  if(messages === null || messages.length === 0 || messages === undefined){
-    displayMessage = 'No messages yet';
-  }
-  else{
-    displayMessage = messages[messages.length - 1].message;
-     if (displayMessage.length > 20) {
+  let displayMessage = conversation.lastMessage.message;
+  if (displayMessage.length > 20) {
     displayMessage = displayMessage.substring(0, 20) + '...';
   }
-  }
- 
- 
- 
 
   return (
     <Pressable onPress={() => readConvo(conversation)}>
