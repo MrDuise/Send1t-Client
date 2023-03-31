@@ -3,12 +3,15 @@ import React, { useState, useContext } from 'react';
 import { Appbar, Menu } from 'react-native-paper';
 import { logOut } from '../infrastructure/backend/request';
 import AppContext from './AppContext';
+import SideNavBar from './SideNavBar';
 
 const ConvoLogHeader = ({ navigation, route }) => {
   const myContext = useContext(AppContext);
   const [visible, setVisible] = useState(false);
 
-  const openMenu = () => setVisible(true);
+  const openMenu = () => {
+    setVisible(true);
+  }
 
   const logout = async () => {
     setVisible(false);
@@ -27,7 +30,7 @@ const ConvoLogHeader = ({ navigation, route }) => {
         onDismiss={closeMenu}
         anchor={
           <Appbar.Action
-            icon="dots-vertical"
+            icon="lines-vertical"
             color="black"
             onPress={openMenu}
           />

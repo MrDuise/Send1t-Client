@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
 import { Appbar, Menu, Provider, Modal } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useState, useMemo } from 'react';
 import { theme } from './src/infrastructure/theme';
 
@@ -23,7 +24,8 @@ import ChatRoomHeader from './src/components/chatRoomHeader';
 import ConvoLogHeader from './src/components/ConvoLogHeader'
 
 const Stack = createNativeStackNavigator();
-//const Drawer = createDrawerNavigator();
+
+const Drawer = createDrawerNavigator();
 //const Tab = createBottomTabNavigator();
 /**
  * @description This is the main app component that holds the global state and the navigation
@@ -64,9 +66,9 @@ export default function App() {
         <SafeAreaView style={styles.container}>
           <Stack.Navigator initialRouteName="Home">
         
-            <Stack.Screen name="Home" component={WelcomePage} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Home" component={WelcomePage} options={{ headerShown: false }}/>
+            <Stack.Screen name="Login" component={Login}  options={{ headerShown: false }}/>
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
             <Stack.Screen
               name="ConversationsLog"
               component={ConversationsLog}
