@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
-import { Appbar, Menu, Provider, Modal } from 'react-native-paper';
+import { Appbar, Menu, Provider as PaperProvider, Modal } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -22,7 +22,7 @@ import AvatarSelection from './src/features/register/screens/avatar-selection';
 import NewConversation from './src/features/conversation-log/screens/newConversation';
 import ChatRoomHeader from './src/components/chatRoomHeader';
 import ConvoLogHeader from './src/components/ConvoLogHeader'
-import { SideNavBar } from './src/components/SideNavBar';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -63,7 +63,7 @@ export default function App() {
 
   useMemo(() => {}, [userValues]);
   return (
-    <Provider>
+    <PaperProvider>
     <NavigationContainer>
       <AppContext.Provider value={userValues}>
         <SafeAreaView style={styles.container}>
@@ -100,7 +100,7 @@ export default function App() {
       <Drawer.Screen name="Home" component={HomeScreen} />
     </Drawer.Navigator>
     </NavigationContainer>
-    </Provider>
+    </PaperProvider>
   );
 }
 
