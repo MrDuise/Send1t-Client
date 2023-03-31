@@ -22,6 +22,7 @@ import AvatarSelection from './src/features/register/screens/avatar-selection';
 import NewConversation from './src/features/conversation-log/screens/newConversation';
 import ChatRoomHeader from './src/components/chatRoomHeader';
 import ConvoLogHeader from './src/components/ConvoLogHeader'
+import { SideNavBar } from './src/components/SideNavBar';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +59,8 @@ export default function App() {
     setParticipants,
   };
 
+  
+
   useMemo(() => {}, [userValues]);
   return (
     <Provider>
@@ -92,6 +95,10 @@ export default function App() {
           <StatusBar style="auto" />
         </SafeAreaView>
       </AppContext.Provider>
+
+      <Drawer.Navigator drawerContent={() => <SideNavBar />}>
+      <Drawer.Screen name="Home" component={HomeScreen} />
+    </Drawer.Navigator>
     </NavigationContainer>
     </Provider>
   );
