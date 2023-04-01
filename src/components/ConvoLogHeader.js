@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 import { Appbar, Menu } from 'react-native-paper';
 import { logOut } from '../infrastructure/backend/request';
 import AppContext from './AppContext';
-import SideNavBar from './SideNavBar';
+
 
 const ConvoLogHeader = ({ navigation, route }) => {
   const myContext = useContext(AppContext);
@@ -30,7 +30,7 @@ const ConvoLogHeader = ({ navigation, route }) => {
         onDismiss={closeMenu}
         anchor={
           <Appbar.Action
-            icon="lines-vertical"
+            icon="menu"
             color="black"
             onPress={openMenu}
           />

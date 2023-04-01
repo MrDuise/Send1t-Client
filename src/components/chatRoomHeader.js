@@ -20,7 +20,7 @@ const ChatRoomHeader = ({ navigation, route }) => {
       <Menu
         visible={visible}
         onDismiss={closeMenu}
-        anchor={<Appbar.Action icon="lines-vertical" color="black" onPress={openMenu} />}
+        anchor={<Appbar.Action icon="menu" color="black" onPress={openMenu} />}
       >
         <Menu.Item onPress={() => console.log('Option 1 pressed')} title="Option 1" />
         <Menu.Item onPress={() => console.log('Option 2 pressed')} title="Option 2" />
