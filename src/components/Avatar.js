@@ -8,26 +8,26 @@ import AppContext from './AppContext';
  * @param {*} { profilePic = "", onlineStatus = true }
  * @return {*}
  */
-const AvatarIcon = ({ profilePic = '', size = 32 }) => {
+const AvatarIcon = ({ profilePic = '',onlineStatus, size = 32 }) => {
   const myContext = useContext(AppContext);
   
   return (
-    <View style={styles(myContext.onlineStatus, size).container}>
+    <View style={styles(onlineStatus, size).container}>
       {profilePic !== '' ? (
         <Avatar.Image
           source={profilePic}
           size={size}
-          style={styles(myContext.onlineStatus, size).avatar}
+          style={styles(onlineStatus, size).avatar}
         />
       ) : (
         <Avatar.Icon
           size={size}
           icon="account"
-          style={styles(myContext.onlineStatus, size).avatar}
+          style={styles(onlineStatus, size).avatar}
         />
       )}
 
-      <Badge size={size / 6} style={styles(myContext.onlineStatus, size).statusState} />
+      <Badge size={size / 6} style={styles(onlineStatus, size).statusState} />
     </View>
   );
 };

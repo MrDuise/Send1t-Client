@@ -5,7 +5,7 @@ import AppContext from '../../../components/AppContext';
 
 import { theme } from '../../../infrastructure/theme';
 
-import { login } from '../../../infrastructure/backend/request';
+import { login, getFriends } from '../../../infrastructure/backend/request';
 
 import Logo from '../../../components/Logo';
 
@@ -30,9 +30,9 @@ const Login = ({ navigation }) => {
    */
     const getContacts = async () => {
       const contacts = await getFriends();
-      myContext.contactsValue = contacts
+      myContext.setContacts(contacts);
       
-      console.log(contacts);
+      console.log(myContext.contactsValue);
     };
     
 
@@ -45,7 +45,8 @@ const Login = ({ navigation }) => {
         getContacts();
         //sets the global state to the user that was returned from the backend
         myContext.setOnlineStatus(true);
-        myContext.userValue = user;
+        myContext.setUser(user)
+        console.log('This is the user value in the global context' , myContext.user);
         navigation.navigate('ConversationsLog');
       } else {
         alert('Invalid username or password');

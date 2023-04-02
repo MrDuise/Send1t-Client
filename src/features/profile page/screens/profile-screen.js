@@ -12,6 +12,7 @@ import AppContext from '../../../components/AppContext';
  */
 const ProfilePage = ({ navigation }) => {
     const myContext = useContext(AppContext)
+    console.log(myContext.userValue)
   /**
    * This function navigates to the friends list screen
    *
@@ -30,12 +31,7 @@ const ProfilePage = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 20, paddingTop: 30 }}>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={() => {}} />
-        <Appbar.Content title="Profile" />
-        <Appbar.Action icon="calendar" onPress={() => {}} />
-        <Appbar.Action icon="magnify" onPress={() => {}} />
-      </Appbar.Header>
+      
       <View style={styles.container}>
         <Image
           source={{
@@ -44,15 +40,15 @@ const ProfilePage = ({ navigation }) => {
           style={styles.image}
         />
         <View style={{ top: -60 }}>
-          //displays the users profile picture
+          
           <AvatarIcon
             profilePic={{ uri: 'https://picsum.photos/200' }}
-            onlineStatus={true}
+            onlineStatus={myContext.user.status}
             size={120}
           />
         </View>
         <View style={styles.usernameHeader}>
-          <Text style={styles.usernameText}>{myContext.userValue.firstName} {myContext.userValue.lastName }</Text>
+          <Text style={styles.usernameText}>{myContext.user.firstName} {myContext.user.lastName}</Text>
         </View>
         <View style={styles.tagLine}>
           <Text style={styles.tagLineText}>
@@ -66,7 +62,7 @@ const ProfilePage = ({ navigation }) => {
             style={styles.optionsButton}
             labelStyle={styles.optionsButtonLabel}
             icon="pencil"
-            onPress={console.log('Clicked edit button')}
+            onPress={() => console.log('Clicked edit button')}
           >
             Edit Profile
           </Button>
@@ -75,14 +71,15 @@ const ProfilePage = ({ navigation }) => {
             style={styles.optionsButton}
             labelStyle={styles.optionsButtonLabel}
             icon="account-multiple"
+            onPress={() => console.log('Clicked friends button')}
           >
-            Friends{myContext.contactsValue.length}
+            Friends {myContext.contactsValue.length}
           </Button>
         </View>
       </View>
       <View style={styles.friendsMenu}>
         <View style={styles.friendsMenuHeader}>
-          <Text style={styles.friendsMenuTitle}>Friends (120)</Text>
+          <Text style={styles.friendsMenuTitle}>Friends {myContext.contactsValue.length}</Text>
           <Button
             mode="text"
             labelStyle={{ color: '#0366d6' }}
@@ -117,7 +114,7 @@ const styles = StyleSheet.create({
 
   usernameHeader: {
     alignItems: 'center',
-
+    color: 'black',
     top: -30,
   },
   usernameText: {
@@ -136,13 +133,6 @@ const styles = StyleSheet.create({
     color: '#9095A0FF',
   },
   optionsButton: {
-    height: 40,
-    padding: 14,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#00000000',
-    opacity: 1,
     borderWidth: 1,
     borderColor: '#9095A0FF',
     borderRadius: 4,

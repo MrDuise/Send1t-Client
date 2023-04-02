@@ -339,6 +339,40 @@ const getFriendRequests = async (userName) => {
 };
 
 /**
+ *Updates the users Online status
+ *  
+ * @param {*} status - the status to be updated to
+ * @return {*} - the updated user
+ */
+const updateStatus = async (status) => {
+  try {
+    const response = await fetch('http://localhost:8000/v1/users/changeUserStatus', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        status: status,
+      }),
+    });
+    const data = await response.json();
+    if (data) {
+      
+      const user = data
+      return user;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+
+
+/**
  * Calls the API to get the friends of a user
  * 
  *

@@ -43,14 +43,14 @@ export default function App() {
   const [userName, setUserName] = useState('');
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [contacts, setContacts] = useState([]);
   const [participants, setParticipants] = useState([]);
 
   const userValues = {
     onlineStatusValue: onlineStatus,
     userNameValue: userName,
-    userValue: user,
+    user: user,
     conversationsValue: conversations,
     activeConversationValue: activeConversation,
     contactsValue: contacts,
