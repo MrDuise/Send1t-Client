@@ -1,31 +1,33 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Badge } from 'react-native-paper';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import AppContext from './AppContext';
 /**
  * This component is used to display a users Avatar Icon with a online status
  * If the user does not have a photo, then it display a simple account Icon
  * @param {*} { profilePic = "", onlineStatus = true }
  * @return {*}
  */
-const AvatarIcon = ({ profilePic = '', onlineStatus = true, size = 32 }) => {
+const AvatarIcon = ({ profilePic = '', size = 32 }) => {
+  const myContext = useContext(AppContext);
   
   return (
-    <View style={styles(onlineStatus, size).container}>
+    <View style={styles(myContext.onlineStatus, size).container}>
       {profilePic !== '' ? (
         <Avatar.Image
           source={profilePic}
           size={size}
-          style={styles(onlineStatus, size).avatar}
+          style={styles(myContext.onlineStatus, size).avatar}
         />
       ) : (
         <Avatar.Icon
           size={size}
           icon="account"
-          style={styles(onlineStatus, size).avatar}
+          style={styles(myContext.onlineStatus, size).avatar}
         />
       )}
 
-      <Badge size={size / 6} style={styles(onlineStatus, size).statusState} />
+      <Badge size={size / 6} style={styles(myContext.onlineStatus, size).statusState} />
     </View>
   );
 };

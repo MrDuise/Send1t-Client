@@ -23,8 +23,8 @@ const login = async (userName, password) => {
     });
     const data = await response.json();
     if (data) {
-      const user = data.userName;
-      return user;
+      
+      return data;
     } else {
       return null;
     }

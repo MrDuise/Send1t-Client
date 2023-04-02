@@ -28,15 +28,7 @@ const NewConversation = ({ navigation }) => {
   const [contacts, setContacts] = useState([]);
 
   
-  useEffect(() => {
-    //gets the contacts from the API and sets the state to the contacts
-    const getContacts = async () => {
-      const contacts = await getFriends();
-      setContacts(contacts);
-      console.log(contacts);
-    };
-    getContacts();
-  }, []);
+ 
 
   
 /**
@@ -73,7 +65,7 @@ const makeConversation = async () => {
         <Appbar.Content title="Select Contacts..." />
       </Appbar.Header>
       <View>
-        {contacts.length > 0 ? (
+        {myContext.contactsValue.length > 0 ? (
           contacts.map((contact) => (
             <NewConvoContact item={contact} key={contact.userName} />
           ))

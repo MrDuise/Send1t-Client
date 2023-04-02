@@ -28,14 +28,24 @@ const Login = ({ navigation }) => {
    *if the login is successful, it will navigate to the ConversationsLog screen
     *if the login is unsuccessful, it will alert the user
    */
+    const getContacts = async () => {
+      const contacts = await getFriends();
+      myContext.contactsValue = contacts
+      
+      console.log(contacts);
+    };
+    
+
   const handleLogin = async () => {
     setLoading(true);
     try {
       const user = await login(myContext.userNameValue, password);
 
       if (user !== null && user !== undefined) {
+        getContacts();
         //sets the global state to the user that was returned from the backend
-        myContext.setSignedIn(true);
+        myContext.setOnlineStatus(true);
+        myContext.userValue = user;
         navigation.navigate('ConversationsLog');
       } else {
         alert('Invalid username or password');

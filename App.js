@@ -39,25 +39,28 @@ const Stack = createNativeStackNavigator();
  */
 export default function App() {
   //global state values
-  const [signedIn, setSignedIn] = useState(false);
+  const [onlineStatus, setOnlineStatus] = useState(false);
   const [userName, setUserName] = useState('');
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
   const [user, setUser] = useState({});
+  const [contacts, setContacts] = useState([]);
   const [participants, setParticipants] = useState([]);
 
   const userValues = {
-    signedInValue: signedIn,
+    onlineStatusValue: onlineStatus,
     userNameValue: userName,
     userValue: user,
     conversationsValue: conversations,
     activeConversationValue: activeConversation,
+    contactsValue: contacts,
     participantsValue: participants,
     setUserName,
-    setSignedIn,
+    setOnlineStatus,
     setConversations,
     setActiveConversation,
     setUser,
+    setContacts,
     setParticipants,
   };
 

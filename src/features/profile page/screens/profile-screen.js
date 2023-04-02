@@ -11,13 +11,21 @@ import AppContext from '../../../components/AppContext';
  * @return {*} 
  */
 const ProfilePage = ({ navigation }) => {
-
+    const myContext = useContext(AppContext)
   /**
    * This function navigates to the friends list screen
    *
    */
   const seeFriends = () => {
     navigation.navigate('FriendsList');
+  };
+
+  const changeStatus = () => {
+    myContext.setOnlineStatus(!myContext.onlineStatusValue);
+  };
+
+  const openEditProfile = () => {
+    navigation.navigate('EditProfile');
   };
 
   return (
@@ -44,10 +52,9 @@ const ProfilePage = ({ navigation }) => {
           />
         </View>
         <View style={styles.usernameHeader}>
-          <Text style={styles.usernameText}>John Doe</Text>
+          <Text style={styles.usernameText}>{myContext.userValue.firstName} {myContext.userValue.lastName }</Text>
         </View>
         <View style={styles.tagLine}>
-          //displays the users tagline
           <Text style={styles.tagLineText}>
             Software Developer at XYZ Corp. I love coding and learning new
             things!
@@ -69,7 +76,7 @@ const ProfilePage = ({ navigation }) => {
             labelStyle={styles.optionsButtonLabel}
             icon="account-multiple"
           >
-            Friends
+            Friends{myContext.contactsValue.length}
           </Button>
         </View>
       </View>

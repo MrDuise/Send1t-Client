@@ -20,6 +20,11 @@ const ConvoLogHeader = ({ navigation, route }) => {
     navigation.push('Login');
   };
 
+  const openProfile = () => {
+    setVisible(false);
+    navigation.push('Profile');
+  };
+
   const closeMenu = () => setVisible(false);
   return (
     <Appbar.Header mode="center-aligned">
@@ -37,7 +42,7 @@ const ConvoLogHeader = ({ navigation, route }) => {
         }
       >
         <Menu.Item
-          onPress={() => console.log('Profile button pushed')}
+          onPress={openProfile}
           title="Profile"
         />
         <Menu.Item onPress={logout} title="Logout" />
