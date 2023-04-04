@@ -16,14 +16,14 @@ const FriendsList = ({navigation}) => {
 
   return (
     <View>
-      <FlatList
-        data={friends}
-        renderItem={({item}) => (
-          <FriendCard friend={item} navigation={navigation} />
+        {myContext.contactsValue.length > 0 ? (
+          friends.map((contact) => (
+            <FriendCard item={contact} key={contact.userName} />
+          ))
+        ) : (
+          <Text>No Contacts</Text>
         )}
-        keyExtractor={(item) => item.userName}
-      />
-    </View>
+      </View>
   )
 }
 

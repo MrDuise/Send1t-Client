@@ -265,7 +265,7 @@ const acceptFriendRequest = async (userName, friendName) => {
     );
     const data = await response.json();
     if (data) {
-      //console.log("in the login request handler", data);
+     
       const user = data.userName;
       return user;
     } else {
