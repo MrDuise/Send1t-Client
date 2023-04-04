@@ -370,6 +370,36 @@ const updateStatus = async (status) => {
 };
 
 
+const updateUser = async (firstName, lastName, email, tagLine) => {
+  try {
+    const response = await fetch('http://localhost:8000/v1/users/updateUser', {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        tagLine: tagLine,
+      }),
+    });
+    const data = await response.json();
+    if (data) {
+      
+      const user = data;
+      return user;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+
 
 
 /**
@@ -410,4 +440,5 @@ module.exports = {
   register,
   getFriends,
   makeNewConversation,
+  updateUser
 };

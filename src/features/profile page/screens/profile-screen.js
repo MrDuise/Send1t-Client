@@ -62,7 +62,7 @@ const ProfilePage = ({ navigation }) => {
             style={styles.optionsButton}
             labelStyle={styles.optionsButtonLabel}
             icon="pencil"
-            onPress={() => console.log('Clicked edit button')}
+            onPress={openEditProfile}
           >
             Edit Profile
           </Button>
@@ -71,7 +71,7 @@ const ProfilePage = ({ navigation }) => {
             style={styles.optionsButton}
             labelStyle={styles.optionsButtonLabel}
             icon="account-multiple"
-            onPress={() => console.log('Clicked friends button')}
+            onPress={seeFriends}
           >
             Friends {myContext.contactsValue.length}
           </Button>
@@ -86,7 +86,7 @@ const ProfilePage = ({ navigation }) => {
             uppercase={false}
             onPress={seeFriends}
           >
-            See All
+            See Friend requests
           </Button>
         </View>
         {/* Friends List */}

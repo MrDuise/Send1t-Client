@@ -47,6 +47,7 @@ export default function App() {
   const [contacts, setContacts] = useState([]);
   const [participants, setParticipants] = useState([]);
 
+  //global state object
   const userValues = {
     onlineStatusValue: onlineStatus,
     userNameValue: userName,
@@ -118,6 +119,7 @@ export default function App() {
                 name="NewConversation"
                 component={NewConversation}
               />
+              <Stack.Screen name="EditProfile" component={EditProfile} />
             </Stack.Navigator>
             <StatusBar style="auto" />
           </SafeAreaView>

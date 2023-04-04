@@ -25,7 +25,7 @@ import {
 const NewConversation = ({ navigation }) => {
   const myContext = useContext(AppContext);
 
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(myContext.contactsValue);
 
   
  
