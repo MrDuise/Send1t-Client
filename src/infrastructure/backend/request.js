@@ -10,7 +10,7 @@
  */
 const login = async (userName, password) => {
   try {
-    const response = await fetch('http://10.0.2.2:8000/v1/users/login/local', {
+    const response = await fetch('https://send1t-api.onrender.com/v1/users/login/local', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -23,7 +23,7 @@ const login = async (userName, password) => {
     });
     const data = await response.json();
     if (data) {
-      
+      console.log(data);
       return data;
     } else {
       return null;
@@ -69,7 +69,7 @@ const logOut = async () => {
 const getConversations = async (userNameValue) => {
   try {
     const response = await fetch(
-      'http://10.0.2.2:8000/v1/conversations/getUserConversations',
+      'https://send1t-api.onrender.com/v1/conversations/getUserConversations',
       {
         method: 'POST',
         credentials: 'include',
