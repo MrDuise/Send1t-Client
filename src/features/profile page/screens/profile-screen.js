@@ -20,6 +20,13 @@ const ProfilePage = ({ navigation }) => {
   const seeFriends = () => {
     navigation.navigate('FriendsList');
   };
+/**
+ *method for sending a user to the friend request screen
+ *
+ */
+const sendFriendRequest = () => {
+    navigation.navigate('FriendRequests');
+  }
 
   const changeStatus = () => {
     myContext.setOnlineStatus(!myContext.onlineStatusValue);

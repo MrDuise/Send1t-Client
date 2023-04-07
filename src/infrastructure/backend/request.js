@@ -142,7 +142,7 @@ const makeNewConversation = async (participants, isGroup) => {
 const getMessages = async (conversationId) => {
   try {
     const response = await fetch(
-      'http://10.0.2.2:8000/v1/conversations/getMessageLog',
+      'https://send1t-api.onrender.com/v1/conversations/getMessageLog',
       {
         method: 'POST',
         credentials: 'include',
