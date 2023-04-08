@@ -46,7 +46,6 @@ const Login = ({ navigation }) => {
         //sets the global state to the user that was returned from the backend
         myContext.setOnlineStatus(true);
         myContext.setUser(user)
-        console.log('This is the user value in the global context' , myContext.user);
         navigation.navigate('ConversationsLog');
       } else {
         alert('Invalid username or password');

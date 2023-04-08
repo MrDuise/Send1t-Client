@@ -17,6 +17,9 @@ const ConvoLogHeader = ({ navigation, route }) => {
     setVisible(false);
     await logOut();
     myContext.userNameValue = '';
+    myContext.setUser(null);
+    myContext.setContacts([]);
+    
     navigation.push('Login');
   };
 

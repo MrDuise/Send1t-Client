@@ -51,7 +51,7 @@ const ChatRoom = ({ route, navigation }) => {
     getMessagesFromAPI();
 
     //connects to the socket.io server
-    socketRef.current = io('http://10.0.2.2:8000');
+    socketRef.current = io('https://send1t-api.onrender.com');
 
     //listens for the sendMessage event
     //this is the response from the server after the client sends a message

@@ -1,32 +1,38 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
-import React, {useState, useContext, useEffect} from 'react'
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper'
-import AppContext from '../../../components/AppContext'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import AppContext from '../../../components/AppContext';
+import { theme } from '../../../infrastructure/theme';
 
-import FriendCard from '../components/friendCard'
+import FriendCard from '../components/friendCard';
 
-const FriendsList = ({navigation}) => {
+const FriendsList = ({ navigation }) => {
   const myContext = useContext(AppContext);
-  const [friends, setFriends] = useState([])
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
-    
-    setFriends(mycontext.userValue.contacts)
-  }, [])
+    setFriends(myContext.user.contacts);
+  }, []);
 
   return (
-    <View>
-        {myContext.contactsValue.length > 0 ? (
+    <SafeAreaView style={styles.container}>
+      <View>
+        {myContext.user.contacts.length > 0 ? (
           friends.map((contact) => (
-            <FriendCard item={contact} key={contact.userName} />
+            <FriendCard item={contact} key={contact.userName} nav={navigation}/>
           ))
         ) : (
           <Text>No Contacts</Text>
         )}
       </View>
-  )
-}
+    </SafeAreaView>
+  );
+};
 
-export default FriendsList
+export default FriendsList;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.bg.primary,
+  },
+});

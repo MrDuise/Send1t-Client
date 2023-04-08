@@ -13,18 +13,18 @@ import AvatarIcon from '../../../components/Avatar';
  * @param {*} {item}
  * @return {*}
  */
-const NewConvoContact = ({ item }) => {
+const FriendCard = ({ item, nav }) => {
   
 
   const goToFriendProfile = () => {
-    navigation.navigate('FriendProfile', {friend: item});
+    nav.navigate('FriendProfile', {friend: item});
   };
 
   return (
-    <Pressable onPress={() => addParticipant(item)}>
+    <Pressable onPress={goToFriendProfile}>
       <Card.Title
         title={item.userName}
-        style={styles(clicked).card}
+        style={styles.card}
         key={item.userName}
         left={(props) => <AvatarIcon />}
       />
@@ -32,7 +32,7 @@ const NewConvoContact = ({ item }) => {
   );
 };
 
-export default NewConvoContact;
+export default FriendCard;
 
 const styles  = StyleSheet.create({
     card: {

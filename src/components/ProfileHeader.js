@@ -1,18 +1,48 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Appbar } from 'react-native-paper'
+import { StyleSheet } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Appbar, Menu } from 'react-native-paper';
+import { logOut } from '../infrastructure/backend/request';
+import AppContext from './AppContext';
 
-const ProfileHeader = () => {
+const ProfileHeader = ({ navigation, route }) => {
+  const myContext = useContext(AppContext);
+  const [visible, setVisible] = useState(false);
+
+  const openMenu = () => {
+    setVisible(true);
+  };
+
+  const logout = async () => {
+    setVisible(false);
+    await logOut();
+    myContext.userNameValue = '';
+    myContext.setUser(null);
+    myContext.setContacts([]);
+    
+    navigation.push('Login');
+  };
+
+  const closeMenu = () => setVisible(false);
   return (
-    <Appbar.Header>
-    <Appbar.BackAction onPress={() => {}} />
-    <Appbar.Content title="Profile" />
-    <Appbar.Action icon="calendar" onPress={() => {}} />
-    <Appbar.Action icon="magnify" onPress={() => {}} />
-  </Appbar.Header>
-  )
-}
+    <Appbar.Header mode="center-aligned">
+      <Appbar.BackAction
+        onPress={() => {
+          navigation.navigate();
+        }}
+      />
+      <Appbar.Content title="Profile" />
 
-export default ProfileHeader
+      <Menu
+        visible={visible}
+        onDismiss={closeMenu}
+        anchor={<Appbar.Action icon="menu" color="black" onPress={openMenu} />}
+      >
+        <Menu.Item onPress={logout} title="Logout" />
+      </Menu>
+    </Appbar.Header>
+  );
+};
 
-const styles = StyleSheet.create({})
+export default ProfileHeader;
+
+const styles = StyleSheet.create({});

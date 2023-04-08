@@ -25,7 +25,7 @@ import {
 const NewConversation = ({ navigation }) => {
   const myContext = useContext(AppContext);
 
-  const [contacts, setContacts] = useState(myContext.contactsValue);
+  const [contacts, setContacts] = useState(myContext.user.contacts);
 
   
  
@@ -65,7 +65,7 @@ const makeConversation = async () => {
         <Appbar.Content title="Select Contacts..." />
       </Appbar.Header>
       <View>
-        {myContext.contactsValue.length > 0 ? (
+        {myContext.user.contacts.length > 0 ? (
           contacts.map((contact) => (
             <NewConvoContact item={contact} key={contact.userName} />
           ))

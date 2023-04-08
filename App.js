@@ -27,6 +27,8 @@ import AvatarSelection from './src/features/register/screens/avatar-selection';
 import NewConversation from './src/features/conversation-log/screens/newConversation';
 import ChatRoomHeader from './src/components/chatRoomHeader';
 import ConvoLogHeader from './src/components/ConvoLogHeader';
+import ProfileHeader from './src/components/ProfileHeader';
+import FriendsList from './src/features/friends/screens/friends-list.screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -114,12 +116,17 @@ export default function App() {
               <Stack.Screen
                 name="AvatarSelection"
                 component={AvatarSelection}
+                options={({ navigation, route }) => ({
+                  header: () => (
+                    <ProfileHeader navigation={navigation} route={route} />
+                  ),
+                })}
               />
               <Stack.Screen
                 name="NewConversation"
                 component={NewConversation}
               />
-              <Stack.Screen name="EditProfile" component={EditProfile} />
+              <Stack.Screen name="FriendsList" component={FriendsList} />
             </Stack.Navigator>
             <StatusBar style="auto" />
           </SafeAreaView>
