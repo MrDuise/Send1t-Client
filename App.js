@@ -29,6 +29,7 @@ import ChatRoomHeader from './src/components/chatRoomHeader';
 import ConvoLogHeader from './src/components/ConvoLogHeader';
 import ProfileHeader from './src/components/ProfileHeader';
 import FriendsList from './src/features/friends/screens/friends-list.screen';
+import FriendRequestsScreen from './src/features/friends/screens/friend-request.screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -127,6 +128,7 @@ export default function App() {
                 component={NewConversation}
               />
               <Stack.Screen name="FriendsList" component={FriendsList} />
+              <Stack.Screen name="FriendRequests" component={FriendRequestsScreen} />
             </Stack.Navigator>
             <StatusBar style="auto" />
           </SafeAreaView>

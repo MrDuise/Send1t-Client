@@ -8,11 +8,11 @@ import AppContext from '../../../components/AppContext';
  * This page is accessed by clicking on the profile icon in the bottom navigation bar
  * current this page is a static page and does not display any information from the database
  * @param {*} { navigation }
- * @return {*} 
+ * @return {*}
  */
 const ProfilePage = ({ navigation }) => {
-    const myContext = useContext(AppContext)
-    console.log(myContext.userValue)
+  const myContext = useContext(AppContext);
+  console.log(myContext.userValue);
   /**
    * This function navigates to the friends list screen
    *
@@ -20,13 +20,13 @@ const ProfilePage = ({ navigation }) => {
   const seeFriends = () => {
     navigation.navigate('FriendsList');
   };
-/**
- *method for sending a user to the friend request screen
- *
- */
-const sendFriendRequest = () => {
+  /**
+   *method for sending a user to the friend request screen
+   *
+   */
+  const seeFriendRequests = () => {
     navigation.navigate('FriendRequests');
-  }
+  };
 
   const changeStatus = () => {
     myContext.setOnlineStatus(!myContext.onlineStatusValue);
@@ -38,7 +38,6 @@ const sendFriendRequest = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 20, paddingTop: 30 }}>
-      
       <View style={styles.container}>
         <Image
           source={{
@@ -47,7 +46,6 @@ const sendFriendRequest = () => {
           style={styles.image}
         />
         <View style={{ top: -60 }}>
-          
           <AvatarIcon
             profilePic={{ uri: 'https://picsum.photos/200' }}
             onlineStatus={myContext.user.status}
@@ -55,7 +53,9 @@ const sendFriendRequest = () => {
           />
         </View>
         <View style={styles.usernameHeader}>
-          <Text style={styles.usernameText}>{myContext.user.firstName} {myContext.user.lastName}</Text>
+          <Text style={styles.usernameText}>
+            {myContext.user.firstName} {myContext.user.lastName}
+          </Text>
         </View>
         <View style={styles.tagLine}>
           <Text style={styles.tagLineText}>
@@ -86,19 +86,19 @@ const sendFriendRequest = () => {
       </View>
       <View style={styles.friendsMenu}>
         <View style={styles.friendsMenuHeader}>
-          <Text style={styles.friendsMenuTitle}>Friends {myContext.contactsValue.length}</Text>
+          <Text style={styles.friendsMenuTitle}>
+            Friends {myContext.contactsValue.length}
+          </Text>
           <Button
             mode="text"
             labelStyle={{ color: '#0366d6' }}
             uppercase={false}
-            onPress={seeFriends}
+            onPress={seeFriendRequests}
           >
             See Friend requests
           </Button>
         </View>
-        {/* Friends List */}
       </View>
-      {/* More sections */}
     </SafeAreaView>
   );
 };

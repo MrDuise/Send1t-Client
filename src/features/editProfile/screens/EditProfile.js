@@ -87,7 +87,7 @@ const EditProfile = () => {
           <TextInput
             label="Tagline"
             mode="outlined"
-            value={email}
+            value={tagLine}
             style={styles.textInput}
             onChangeText={(text) => setTagLine(text)}
             left={<TextInput.Icon icon="email" />}

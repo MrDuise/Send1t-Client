@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Card, Title, Button } from 'react-native-paper';
+import {getFriendRequests} from '../../../infrastructure/backend/request';
 
 const FriendRequestsScreen = () => {
   const [friendRequests, setFriendRequests] = useState([
@@ -9,6 +10,18 @@ const FriendRequestsScreen = () => {
     { id: '3', name: 'Friend 3' },
     // Add more friend requests here as needed
   ]);
+
+  useEffect(() => {
+    const fetchFriendRequests = async () => {
+      const friendRequests = await getFriendRequests();
+      setFriendRequests(friendRequests);
+    };
+
+    fetchFriendRequests();
+  }, []);
+
+  
+
 
   const handleAccept = (id) => {
     // Logic to accept friend request
@@ -51,6 +64,7 @@ const FriendRequestsScreen = () => {
       <FlatList
         data={friendRequests}
         renderItem={renderFriendRequest}
+        ListEmptyComponent={<Title>No friend requests</Title>}
         keyExtractor={(item) => item.id}
       />
     </View>
