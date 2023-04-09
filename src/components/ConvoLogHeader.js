@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import React, { useState, useContext } from 'react';
 import { Appbar, Menu, Searchbar } from 'react-native-paper';
-import { logOut } from '../infrastructure/backend/request';
+import { logOut, seachForUser } from '../infrastructure/backend/request';
 import AppContext from './AppContext';
 
 
@@ -48,6 +48,11 @@ const ConvoLogHeader = ({ navigation, route }) => {
 
   const onSearch = () => {
    console.log(searchQuery);
+    const searchResult = seachForUser(searchQuery);
+
+    if(searchResult.message !== "User not found"){
+      console.log(searchResult);
+    }
   };
 
   const closeMenu = () => setVisible(false);

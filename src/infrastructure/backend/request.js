@@ -327,7 +327,7 @@ const getFriends = async () => {
 const acceptFriendRequest = async (userName, friendName) => {
   try {
     const response = await fetch(
-      'http://localhost:8000/v1/users/acceptFriendRequest',
+      'http://10.0.2.2:8000/v1/users/acceptFriendRequest',
       {
         method: 'POST',
         credentials: 'include',
@@ -356,7 +356,7 @@ const acceptFriendRequest = async (userName, friendName) => {
 const declineFriendRequest = async (userName, friendName) => {
   try {
     const response = await fetch(
-      'http://localhost:8000/v1/users/declineFriendRequest',
+      'http://10.0.2.2:8000/v1/users/declineFriendRequest',
       {
         method: 'POST',
         credentials: 'include',
@@ -394,7 +394,7 @@ const declineFriendRequest = async (userName, friendName) => {
 const updateStatus = async (status) => {
   try {
     const response = await fetch(
-      'http://localhost:8000/v1/users/changeUserStatus',
+      'http://10.0.2.2:8000/v1/users/changeUserStatus',
       {
         method: 'POST',
         credentials: 'include',
@@ -420,7 +420,7 @@ const updateStatus = async (status) => {
 
 const updateUser = async (firstName, lastName, email, tagLine) => {
   try {
-    const response = await fetch('http://localhost:8000/v1/users/updateUser', {
+    const response = await fetch('http://10.0.2.2:8000/v1/users/updateUser', {
       method: 'PATCH',
       credentials: 'include',
       headers: {
