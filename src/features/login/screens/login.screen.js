@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, AsyncStorage } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import AppContext from '../../../components/AppContext';
 
 import { theme } from '../../../infrastructure/theme';
@@ -34,6 +34,24 @@ const Login = ({ navigation }) => {
       
       console.log(myContext.contactsValue);
     };
+
+    useEffect(() => {
+      const checkUserCredentials = async () => {
+        // Check if user credentials are stored in AsyncStorage
+        const userCredentials = await AsyncStorage.getItem('userCredentials');
+  
+        if (userCredentials) {
+          // User credentials found, navigate to Main screen
+          const { userName, password } = JSON.parse(userCredentials);
+          myContext.setUserName(userName);
+          setPassword(password);
+          await handleLogin();
+        }
+      };
+
+      checkUserCredentials();
+
+    }, []);
     
 
   const handleLogin = async () => {
@@ -45,6 +63,7 @@ const Login = ({ navigation }) => {
         getContacts();
         //sets the global state to the user that was returned from the backend
         myContext.setOnlineStatus(true);
+        await AsyncStorage.setItem('userCredentials', JSON.stringify(myContext.userNameValue, password));
         myContext.setUser(user)
         navigation.navigate('ConversationsLog');
       } else {

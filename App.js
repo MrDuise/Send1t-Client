@@ -74,7 +74,7 @@ export default function App() {
       <NavigationContainer>
         <AppContext.Provider value={userValues}>
           <SafeAreaView style={styles.container}>
-            <Stack.Navigator initialRouteName="Home">
+            <Stack.Navigator initialRouteName="Login">
               <Stack.Screen
                 name="Home"
                 component={WelcomePage}

@@ -34,6 +34,7 @@ const ConvoLogHeader = ({ navigation, route }) => {
   const logout = async () => {
     setVisible(false);
     await logOut();
+    await AsyncStorage.removeItem('userCredentials');
     myContext.userNameValue = '';
     myContext.setUser(null);
     myContext.setContacts([]);
