@@ -21,7 +21,8 @@ The postman collection used for testing can be found within the 'Extras' folder
     
 ## Demo
 
-![](send1t.gif)
+
+<img src="send1t.gif" width="360" height="740"/>
 
 
 ## Screenshots
