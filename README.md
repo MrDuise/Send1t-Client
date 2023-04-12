@@ -21,12 +21,10 @@ The postman collection used for testing can be found within the 'Extras' folder
     
 ## Demo
 
-Insert gif or link to demo
+![](send1t.gif)
 
 
 ## Screenshots
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
 
 ## Badges
