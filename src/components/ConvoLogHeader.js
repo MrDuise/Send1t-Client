@@ -1,4 +1,5 @@
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useContext } from 'react';
 import { Appbar, Menu, Searchbar } from 'react-native-paper';
 import { logOut, seachForUser } from '../infrastructure/backend/request';
@@ -33,9 +34,9 @@ const ConvoLogHeader = ({ navigation, route }) => {
 
   const logout = async () => {
     setVisible(false);
+    await AsyncStorage.removeItem('@userCredentials');
     await logOut();
-    await AsyncStorage.removeItem('userCredentials');
-    myContext.userNameValue = '';
+    myContext.setUserName('');
     myContext.setUser(null);
     myContext.setContacts([]);
     

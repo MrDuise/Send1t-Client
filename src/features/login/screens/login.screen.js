@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, SafeAreaView, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput, Button } from 'react-native-paper';
 import React, { useState, useContext, useEffect } from 'react';
 import AppContext from '../../../components/AppContext';
@@ -13,10 +14,11 @@ import Logo from '../../../components/Logo';
  *Login screen
  *used to login to the app
  * @param {*} { navigation } prop provided by react navigation. used to navigate to other screens
- * @return {*} 
+ * @return {*}
  */
 const Login = ({ navigation }) => {
-  const [password, setPassword] = useState('');
+  const [userNameValue, setUserName] = useState('');
+  const [passWord, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   //gets the context from the AppContext
@@ -26,56 +28,84 @@ const Login = ({ navigation }) => {
   /**
    *takes the username and password and sends it to the backend
    *if the login is successful, it will navigate to the ConversationsLog screen
-    *if the login is unsuccessful, it will alert the user
+   *if the login is unsuccessful, it will alert the user
    */
-    const getContacts = async () => {
-      const contacts = await getFriends();
-      myContext.setContacts(contacts);
-      
-      console.log(myContext.contactsValue);
-    };
+  const getContacts = async () => {
+    const contacts = await getFriends();
+    myContext.setContacts(contacts);
 
-    useEffect(() => {
-      const checkUserCredentials = async () => {
-        // Check if user credentials are stored in AsyncStorage
-        const userCredentials = await AsyncStorage.getItem('userCredentials');
+    console.log(myContext.contactsValue);
+  };
+
+  /*
+  useEffect(() => {
+    const checkUserCredentials = async () => {
+      try {
+        const userCredentials = await AsyncStorage.getItem('@userCredentials');
+        console.log(userCredentials);
+        const { userName, password } = JSON.parse(userCredentials);
+        
+        console.log( "userNameValue", userName);
+        console.log("password", password);
   
-        if (userCredentials) {
-          // User credentials found, navigate to Main screen
-          const { userName, password } = JSON.parse(userCredentials);
-          myContext.setUserName(userName);
+        if (userName !== "" && password !== "") {
+          setUserName();
+          console.log( "userNameValue", userName);
           setPassword(password);
-          await handleLogin();
+
+          console.log("password", password);
+          await handleLogin(); // Use await to wait for handleLogin() to complete
+        } else {
+          throw new Error('No user credentials found');
         }
-      };
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+     checkUserCredentials();
+  }, []);
+*/
 
-      checkUserCredentials();
-
-    }, []);
-    
 
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const user = await login(myContext.userNameValue, password);
+      const user = await login(userNameValue, passWord);
 
-      if (user !== null && user !== undefined) {
+
+      console.log("user", user);
+      if (user) {
         getContacts();
-        //sets the global state to the user that was returned from the backend
-        myContext.setOnlineStatus(true);
-        await AsyncStorage.setItem('userCredentials', JSON.stringify(myContext.userNameValue, password));
-        myContext.setUser(user)
+        // Set the global state to the user that was returned from the backend
+       /* 
+        const userCredentials = {
+          userName: userNameValue,
+          password: passWord,
+        };
+  
+        
+        await AsyncStorage.setItem(
+          '@userCredentials',
+          JSON.stringify(userCredentials)
+        );
+        */
+        myContext.setUserName(userNameValue);
+        myContext.setUser(user);
         navigation.navigate('ConversationsLog');
       } else {
+        // Handle invalid username or password
         alert('Invalid username or password');
         myContext.setUserName('');
         setPassword('');
       }
     } catch (error) {
+      // Handle any other errors
       alert('An error occurred');
       console.error(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   /**
@@ -94,15 +124,15 @@ const Login = ({ navigation }) => {
         <TextInput
           label="Username"
           mode="outlined"
-          value={myContext.userNameValue}
+          value={userNameValue}
           style={styles.textInput}
-          onChangeText={myContext.setUserName}
+          onChangeText={setUserName}
           left={<TextInput.Icon icon="account" />}
         />
         <TextInput
           label="Password"
           mode="outlined"
-          value={password}
+          value={passWord}
           secureTextEntry={true}
           style={styles.textInput}
           onChangeText={(text) => setPassword(text)}

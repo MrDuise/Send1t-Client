@@ -113,19 +113,22 @@ export default function App() {
                   ),
                 })}
               />
-              <Stack.Screen name="Profile" component={ProfilePage} />
+              <Stack.Screen name="Profile" component={ProfilePage} 
+              options={({ navigation, route }) => ({
+                header: () => (
+                  <ProfileHeader navigation={navigation} route={route} />
+                ),
+              })}
+              />
               <Stack.Screen
                 name="AvatarSelection"
                 component={AvatarSelection}
-                options={({ navigation, route }) => ({
-                  header: () => (
-                    <ProfileHeader navigation={navigation} route={route} />
-                  ),
-                })}
+                
               />
               <Stack.Screen
                 name="NewConversation"
                 component={NewConversation}
+                options={{ title: 'Select Contacts...' }}
               />
               <Stack.Screen name="FriendsList" component={FriendsList} />
               <Stack.Screen name="FriendRequests" component={FriendRequestsScreen} />

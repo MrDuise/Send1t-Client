@@ -16,7 +16,7 @@
  */
 const register = async (userName, password, firstName, lastName, email) => {
   try {
-    const response = await fetch('http://10.0.2.2:8000/v1/users/register/', {
+    const response = await fetch('https://send1t-api.onrender.com/v1/users/register/', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -62,7 +62,7 @@ const register = async (userName, password, firstName, lastName, email) => {
 const makeNewConversation = async (participants, isGroup) => {
   try {
     const response = await fetch(
-      'http://10.0.2.2:8000/v1/conversations/createConversation',
+      'https://send1t-api.onrender.com/v1/conversations/createConversation',
       {
         method: 'POST',
         credentials: 'include',
@@ -147,7 +147,6 @@ const login = async (userName, password) => {
     );
     const data = await response.json();
     if (data) {
-      console.log(data);
       return data;
     } else {
       return null;
@@ -299,7 +298,7 @@ const getMessages = async (conversationId) => {
  */
 const getFriends = async () => {
   try {
-    const response = await fetch('http://10.0.2.2:8000/v1/users/contacts', {
+    const response = await fetch('https://send1t-api.onrender.com/v1/users/contacts', {
       method: 'GET',
       credentials: 'include',
       headers: {

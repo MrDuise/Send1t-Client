@@ -61,9 +61,6 @@ const makeConversation = async () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Appbar.Header>
-        <Appbar.Content title="Select Contacts..." />
-      </Appbar.Header>
       <View>
         {myContext.user.contacts.length > 0 ? (
           contacts.map((contact) => (

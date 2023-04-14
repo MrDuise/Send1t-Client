@@ -27,7 +27,7 @@ const ProfileHeader = ({ navigation, route }) => {
     <Appbar.Header mode="center-aligned">
       <Appbar.BackAction
         onPress={() => {
-          navigation.navigate();
+          navigation.navigate('ConversationsLog')
         }}
       />
       <Appbar.Content title="Profile" />
