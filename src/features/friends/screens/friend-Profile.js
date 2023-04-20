@@ -3,6 +3,58 @@ import { View, Text, Image, StyleSheet, SafeAreaView } from 'react-native';
 import { Avatar, Badge, Button, Appbar } from 'react-native-paper';
 import AvatarIcon from '../../../components/Avatar';
 import AppContext from '../../../components/AppContext';
+
+
+
+
+
+
+
+
+
+
+const FriendRequestButton = ({friend}) => {
+  if (friend.status === 'pending') {
+    return (
+      <Button
+        mode="grey"
+        style={styles.optionsButton}
+        labelStyle={styles.optionsButtonLabel}
+        icon="account-clock"
+        onPress={openEditProfile}
+      >
+        request sent
+      </Button>
+    );
+  } else if (friend.status === 'accepted') {
+    return (
+      <Button
+        mode="outlined"
+        style={styles.optionsButton}
+        labelStyle={styles.optionsButtonLabel}
+        icon="account-check"
+        onPress={openEditProfile}
+      >
+        Friends
+      </Button>
+    );
+  } else if (friend.status === null) {
+    //this means that the user is not friends with the person. need to add a search feature to search for users
+    return (
+      <Button
+        mode="outlined"
+        style={styles.optionsButton}
+        labelStyle={styles.optionsButtonLabel}
+        icon="account-plus"
+        onPress={openEditProfile}
+      >
+        Add Friend
+      </Button>
+    );
+  }
+};
+
+
 /**
  * This screen displays the users profile information
  * This page is accessed by clicking on the profile icon in the bottom navigation bar
@@ -10,32 +62,11 @@ import AppContext from '../../../components/AppContext';
  * @param {*} { navigation }
  * @return {*}
  */
-const ProfilePage = ({ navigation }) => {
+const FriendProfile = ({ navigation, route }) => {
   const myContext = useContext(AppContext);
-  console.log(myContext.userValue);
-  /**
-   * This function navigates to the friends list screen
-   *
-   */
-  const seeFriends = () => {
-    navigation.navigate('FriendsList');
-  };
-  /**
-   *method for sending a user to the friend request screen
-   *
-   */
-  const seeFriendRequests = () => {
-    navigation.navigate('FriendRequests');
-  };
+  console.log(route.params.friend);
 
-  const changeStatus = () => {
-    myContext.setOnlineStatus(!myContext.onlineStatusValue);
-  };
-
-  const openEditProfile = () => {
-    navigation.navigate('EditProfile');
-  };
-
+ 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 20, paddingTop: 30 }}>
       <View style={styles.container}>
@@ -48,62 +79,30 @@ const ProfilePage = ({ navigation }) => {
         <View style={{ top: -60 }}>
           <AvatarIcon
             profilePic={{ uri: 'https://picsum.photos/200' }}
-            onlineStatus={myContext.user.status}
+            onlineStatus={route.params.friend.status}
             size={120}
           />
         </View>
         <View style={styles.usernameHeader}>
           <Text style={styles.usernameText}>
-            {myContext.user.firstName} {myContext.user.lastName}
+            {route.params.friend.firstName} {route.params.friend.lastName}
           </Text>
         </View>
         <View style={styles.tagLine}>
           <Text style={styles.tagLineText}>
-            Software Developer at XYZ Corp. I love coding and learning new
-            things!
+          {route.params.friend.tagLine}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
-          <Button
-            mode="outlined"
-            style={styles.optionsButton}
-            labelStyle={styles.optionsButtonLabel}
-            icon="pencil"
-            onPress={openEditProfile}
-          >
-            Edit Profile
-          </Button>
-          <Button
-            mode="outlined"
-            style={styles.optionsButton}
-            labelStyle={styles.optionsButtonLabel}
-            icon="account-multiple"
-            onPress={seeFriends}
-          >
-            Friends {myContext.contactsValue.length}
-          </Button>
-        </View>
-      </View>
-      <View style={styles.friendsMenu}>
-        <View style={styles.friendsMenuHeader}>
-          <Text style={styles.friendsMenuTitle}>
-            Friends {myContext.contactsValue.length}
-          </Text>
-          <Button
-            mode="text"
-            labelStyle={{ color: '#0366d6' }}
-            uppercase={false}
-            onPress={seeFriendRequests}
-          >
-            See Friend requests
-          </Button>
+          {}
+          
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default ProfilePage;
+export default FriendProfile;
 
 const styles = StyleSheet.create({
   container: {

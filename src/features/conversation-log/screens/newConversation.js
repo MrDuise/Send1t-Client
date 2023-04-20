@@ -25,18 +25,10 @@ import {
 const NewConversation = ({ navigation }) => {
   const myContext = useContext(AppContext);
 
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(myContext.user.contacts);
 
   
-  useEffect(() => {
-    //gets the contacts from the API and sets the state to the contacts
-    const getContacts = async () => {
-      const contacts = await getFriends();
-      setContacts(contacts);
-      console.log(contacts);
-    };
-    getContacts();
-  }, []);
+ 
 
   
 /**
@@ -69,11 +61,8 @@ const makeConversation = async () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Appbar.Header>
-        <Appbar.Content title="Select Contacts..." />
-      </Appbar.Header>
       <View>
-        {contacts.length > 0 ? (
+        {myContext.user.contacts.length > 0 ? (
           contacts.map((contact) => (
             <NewConvoContact item={contact} key={contact.userName} />
           ))

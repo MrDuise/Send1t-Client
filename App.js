@@ -1,7 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
+import {
+  Appbar,
+  Menu,
+  Provider as PaperProvider,
+  Modal,
+} from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import React, { useState, useMemo } from 'react';
 import { theme } from './src/infrastructure/theme';
 
@@ -18,68 +25,121 @@ import ChatRoom from './src/features/chat-page/screens/chatRoom';
 import ProfilePage from './src/features/profile page/screens/profile-screen';
 import AvatarSelection from './src/features/register/screens/avatar-selection';
 import NewConversation from './src/features/conversation-log/screens/newConversation';
+import ChatRoomHeader from './src/components/chatRoomHeader';
+import ConvoLogHeader from './src/components/ConvoLogHeader';
+import ProfileHeader from './src/components/ProfileHeader';
+import FriendsList from './src/features/friends/screens/friends-list.screen';
+import FriendRequestsScreen from './src/features/friends/screens/friend-request.screen';
+import FriendProfile from './src/features/friends/screens/friend-Profile';
 
 const Stack = createNativeStackNavigator();
-//const Drawer = createDrawerNavigator();
-//const Tab = createBottomTabNavigator();
+
 /**
  * @description This is the main app component that holds the global state and the navigation
  * @return {*}  - returns the app component
  *
  * @export
- * @return {*} 
+ * @return {*}
  */
 export default function App() {
   //global state values
-  const [signedIn, setSignedIn] = useState(false);
+  const [onlineStatus, setOnlineStatus] = useState(false);
   const [userName, setUserName] = useState('');
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
+  const [contacts, setContacts] = useState([]);
   const [participants, setParticipants] = useState([]);
 
+  //global state object
   const userValues = {
-    signedInValue: signedIn,
+    onlineStatusValue: onlineStatus,
     userNameValue: userName,
-    userValue: user,
+    user: user,
     conversationsValue: conversations,
     activeConversationValue: activeConversation,
+    contactsValue: contacts,
     participantsValue: participants,
     setUserName,
-    setSignedIn,
+    setOnlineStatus,
     setConversations,
     setActiveConversation,
     setUser,
+    setContacts,
     setParticipants,
   };
 
   useMemo(() => {}, [userValues]);
   return (
-    <NavigationContainer>
-      <AppContext.Provider value={userValues}>
-        <SafeAreaView style={styles.container}>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={WelcomePage} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen
-              name="ConversationsLog"
-              component={ConversationsLog}
-            />
-            <Stack.Screen
-              name="ConversationCard"
-              component={ConversationCard}
-            />
-            <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="ChatRoom" component={ChatRoom} />
-            <Stack.Screen name="Profile" component={ProfilePage} />
-            <Stack.Screen name="AvatarSelection" component={AvatarSelection} />
-            <Stack.Screen name="NewConversation" component={NewConversation} />
-          </Stack.Navigator>
-          <StatusBar style="auto" />
-        </SafeAreaView>
-      </AppContext.Provider>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <AppContext.Provider value={userValues}>
+          <SafeAreaView style={styles.container}>
+            <Stack.Navigator initialRouteName="Login">
+              <Stack.Screen
+                name="Home"
+                component={WelcomePage}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Register"
+                component={Register}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ConversationsLog"
+                component={ConversationsLog}
+                options={({ navigation, route }) => ({
+                  header: () => (
+                    <ConvoLogHeader navigation={navigation} route={route} />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="ConversationCard"
+                component={ConversationCard}
+              />
+              <Stack.Screen name="EditProfile" component={EditProfile} />
+              <Stack.Screen
+                name="ChatRoom"
+                component={ChatRoom}
+                options={({ navigation, route }) => ({
+                  header: () => (
+                    <ChatRoomHeader navigation={navigation} route={route} />
+                  ),
+                })}
+              />
+              <Stack.Screen name="Profile" component={ProfilePage} 
+              options={({ navigation, route }) => ({
+                header: () => (
+                  <ProfileHeader navigation={navigation} route={route} />
+                ),
+              })}
+              />
+              <Stack.Screen
+                name="AvatarSelection"
+                component={AvatarSelection}
+                
+              />
+              <Stack.Screen
+                name="NewConversation"
+                component={NewConversation}
+                options={{ title: 'Select Contacts...' }}
+              />
+              <Stack.Screen name="FriendsList" component={FriendsList} />
+              <Stack.Screen name="FriendRequests" component={FriendRequestsScreen} />
+              <Stack.Screen name="FriendProfile" component={FriendProfile} />
+            </Stack.Navigator>
+            <StatusBar style="auto" />
+          </SafeAreaView>
+        </AppContext.Provider>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
