@@ -4,6 +4,7 @@ import React, { useState, useContext } from 'react';
 import { Appbar, Menu, Searchbar } from 'react-native-paper';
 import { logOut, seachForUser } from '../infrastructure/backend/request';
 import AppContext from './AppContext';
+import SearchResults from './searchResults';
 
 
 const ConvoLogHeader = ({ navigation, route }) => {
@@ -11,6 +12,8 @@ const ConvoLogHeader = ({ navigation, route }) => {
   const [visible, setVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false); // State to track whether search is visible or not
   const [searchQuery, setSearchQuery] = useState(''); // State to store search query
+  const [searchResults, setSearchResults] = useState([]); // State to store search results
+
 
   // Function to handle search icon click
   const handleSearchIconClick = () => {
@@ -34,7 +37,6 @@ const ConvoLogHeader = ({ navigation, route }) => {
 
   const logout = async () => {
     setVisible(false);
-    await AsyncStorage.removeItem('@userCredentials');
     await logOut();
     myContext.setUserName('');
     myContext.setUser(null);
@@ -53,13 +55,18 @@ const ConvoLogHeader = ({ navigation, route }) => {
     const searchResult = seachForUser(searchQuery);
 
     if(searchResult.message !== "User not found"){
-      console.log(searchResult);
+      setSearchQuery('');
+      setSearchResults(searchResult);
+    } else {
+      const notFound = "0 results";
+      setSearchResults(notFound)
     }
   };
 
   const closeMenu = () => setVisible(false);
   return (
     <TouchableWithoutFeedback onPress={handleSearchCancel}>
+       <React.Fragment>
     <Appbar.Header mode="center-aligned">
       <Appbar.Content title="Conversations" />
       {isSearchVisible ? (
@@ -95,7 +102,12 @@ const ConvoLogHeader = ({ navigation, route }) => {
         <Menu.Item onPress={logout} title="Logout" />
       </Menu>
     </Appbar.Header>
+    {searchResults.length > 0 && (
+          <SearchResults results={searchResults} />
+        )}
+         </React.Fragment>
     </TouchableWithoutFeedback>
+   
   );
 };
 

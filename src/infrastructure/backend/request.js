@@ -147,6 +147,7 @@ const login = async (userName, password) => {
     );
     const data = await response.json();
     if (data) {
+
       return data;
     } else {
       return null;
@@ -166,7 +167,7 @@ const getStatus = () => {};
 const seachForUser = async (userName) => {
   try {
     const response = await fetch(
-      'http://localhost:8000/v1/users/searchForUser',
+      'http://10.0.2.2:8000/v1/users/searchForUser',
       {
         method: 'POST',
         credentials: 'include',
@@ -455,7 +456,7 @@ const updateUser = async (firstName, lastName, email, tagLine) => {
  */
 const logOut = async () => {
   try {
-    const response = fetch(`http://10.0.2.2:8000/v1/users/logout`, {
+    const response = await fetch(`https://send1t-api.onrender.com/v1/users/logout`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

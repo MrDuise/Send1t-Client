@@ -1,6 +1,6 @@
 {
     "build": {
-      "local": {
+      "showcase": {
         "android": {
           "buildType": "apk"
         }

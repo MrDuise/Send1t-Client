@@ -30,6 +30,7 @@ import ConvoLogHeader from './src/components/ConvoLogHeader';
 import ProfileHeader from './src/components/ProfileHeader';
 import FriendsList from './src/features/friends/screens/friends-list.screen';
 import FriendRequestsScreen from './src/features/friends/screens/friend-request.screen';
+import FriendProfile from './src/features/friends/screens/friend-Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -132,6 +133,7 @@ export default function App() {
               />
               <Stack.Screen name="FriendsList" component={FriendsList} />
               <Stack.Screen name="FriendRequests" component={FriendRequestsScreen} />
+              <Stack.Screen name="FriendProfile" component={FriendProfile} />
             </Stack.Navigator>
             <StatusBar style="auto" />
           </SafeAreaView>

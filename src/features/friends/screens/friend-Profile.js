@@ -13,7 +13,7 @@ import AppContext from '../../../components/AppContext';
 
 
 
-const FriendRequestButton = () => {
+const FriendRequestButton = ({friend}) => {
   if (friend.status === 'pending') {
     return (
       <Button
@@ -62,9 +62,9 @@ const FriendRequestButton = () => {
  * @param {*} { navigation }
  * @return {*}
  */
-const FriendProfile = ({ navigation, friend }) => {
+const FriendProfile = ({ navigation, route }) => {
   const myContext = useContext(AppContext);
-  console.log(friendValue);
+  console.log(route.params.friend);
 
  
   return (
@@ -79,24 +79,23 @@ const FriendProfile = ({ navigation, friend }) => {
         <View style={{ top: -60 }}>
           <AvatarIcon
             profilePic={{ uri: 'https://picsum.photos/200' }}
-            onlineStatus={friend.status}
+            onlineStatus={route.params.friend.status}
             size={120}
           />
         </View>
         <View style={styles.usernameHeader}>
           <Text style={styles.usernameText}>
-            {friend.firstName} {friend.lastName}
+            {route.params.friend.firstName} {route.params.friend.lastName}
           </Text>
         </View>
         <View style={styles.tagLine}>
           <Text style={styles.tagLineText}>
-            Software Developer at XYZ Corp. I love coding and learning new
-            things!
+          {route.params.friend.tagLine}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
           {}
-          <FriendRequestButton />
+          
         </View>
       </View>
     </SafeAreaView>

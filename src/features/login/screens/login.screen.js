@@ -67,18 +67,15 @@ const Login = ({ navigation }) => {
   }, []);
 */
 
-
   const handleLogin = async () => {
     setLoading(true);
     try {
       const user = await login(userNameValue, passWord);
 
-
-      console.log("user", user);
       if (user) {
         getContacts();
         // Set the global state to the user that was returned from the backend
-       /* 
+        /* 
         const userCredentials = {
           userName: userNameValue,
           password: passWord,

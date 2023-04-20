@@ -29,8 +29,10 @@ const ChatRoom = ({ route, navigation }) => {
   const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const socketRef = useRef();
+  const flatListRef = useRef(null);
 
   
 
@@ -58,6 +60,8 @@ const ChatRoom = ({ route, navigation }) => {
     socketRef.current.on('sendMessage', (message) => {
       messages.push(message);
       setMessages((messages) => [...messages, message]);
+      //flatListRef.current.scrollToEnd();
+      setRefreshing(!refreshing);
     });
     //listens for the typing event
     socketRef.current.on('typing', () => {
@@ -196,6 +200,8 @@ else{
         onContentSizeChange={() => {
           this.flatList.scrollToEnd({ animated: true });
         }}
+        refreshing={refreshing}
+        onRefresh={() => setRefreshing(!refreshing)}
         onLayout={() => {
           this.flatList.scrollToEnd({ animated: true });
         }}
