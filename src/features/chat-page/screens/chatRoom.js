@@ -9,7 +9,7 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import { Avatar, IconButton, Appbar, Menu, Provider } from 'react-native-paper';
+import { Avatar, IconButton} from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import io from 'socket.io-client';
 import AppContext from '../../../components/AppContext';
@@ -29,10 +29,8 @@ const ChatRoom = ({ route, navigation }) => {
   const [text, setText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
 
   const socketRef = useRef();
-  const flatListRef = useRef(null);
 
   
 
@@ -58,24 +56,22 @@ const ChatRoom = ({ route, navigation }) => {
     //listens for the sendMessage event
     //this is the response from the server after the client sends a message
     socketRef.current.on('sendMessage', (message) => {
-      messages.push(message);
+      
       setMessages((messages) => [...messages, message]);
-      //flatListRef.current.scrollToEnd();
-      setRefreshing(!refreshing);
     });
     //listens for the typing event
     socketRef.current.on('typing', () => {
       setIsTyping(true);
     }, []);
 
-    socketRef.current.on('stop typing', () => {
+    socketRef.current.on('stopTyping', () => {
       setIsTyping(false);
     });
 
     return () => {
       socketRef.current.disconnect();
     };
-  }, []);
+  }, [messages]);
   /**
    * @description This function sends a message to the server
    * takes the text from the text input turns into a message object, then sends it to the server via the sendMessage event
@@ -89,7 +85,6 @@ const ChatRoom = ({ route, navigation }) => {
         conversationId: route.params.conversation._id,
       };
       socketRef.current.emit('sendMessage', message);
-      console.log('In the socket.io event', message);
       setText('');
     }
   };
@@ -103,6 +98,11 @@ const ChatRoom = ({ route, navigation }) => {
       socketRef.current.emit('stop typing');
     }, 1000);
   };
+
+  const sendStopTyping = () => {
+    socketRef.current.emit('stopTyping');
+  }
+  
   /**
    * this is the function that renders the messages
    *
@@ -123,7 +123,7 @@ const ChatRoom = ({ route, navigation }) => {
           <Avatar.Image
             size={40}
             source={{ uri: item.sender.profilePicture }}
-            style={styles.avatar}
+            style={{marginLeft: 10}}
           />
         </View>
       );
@@ -162,6 +162,7 @@ const renderTextInput = () => {
             setText(text);
             sendTyping();
           }}
+          onEndEditing={sendStopTyping}
         />
         <TouchableOpacity onPress={sendMessage}>
           <IconButton icon="send" disabled={text.trim() === ''} />
@@ -191,6 +192,7 @@ else{
         }}
         data={messages}
         renderItem={renderItem}
+        maxToRenderPerBatch={8}
         ListEmptyComponent={() => (
           <Text style={styles.noMessages}>No messages</Text>
         )}
@@ -200,13 +202,11 @@ else{
         onContentSizeChange={() => {
           this.flatList.scrollToEnd({ animated: true });
         }}
-        refreshing={refreshing}
-        onRefresh={() => setRefreshing(!refreshing)}
         onLayout={() => {
           this.flatList.scrollToEnd({ animated: true });
         }}
       />
-      {isTyping && <Text style={styles.typingMessage}>User is typing...</Text>}
+      {isTyping ? <Text style={styles.typingMessage}>User is typing...</Text> : <Text></Text>}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingView}

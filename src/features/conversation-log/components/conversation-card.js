@@ -75,7 +75,7 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
       <Card.Title
         style={styles(read).card}
         title={headerTitle}
-        subtitle={conversation.updatedAt}
+        subtitle={new Date(conversation.updatedAt).toLocaleTimeString()}
         left={(props) => <AvatarIcon />}
         right={(props) => <Text {...props}>{displayMessage}</Text>}
       />
