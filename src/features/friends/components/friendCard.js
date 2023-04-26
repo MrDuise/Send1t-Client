@@ -14,8 +14,6 @@ import AvatarIcon from '../../../components/Avatar';
  * @return {*}
  */
 const FriendCard = ({ item, nav }) => {
-  
-
   const goToFriendProfile = () => {
     nav.navigate('FriendProfile', {friend: item});
   };
@@ -23,10 +21,9 @@ const FriendCard = ({ item, nav }) => {
   return (
     <Pressable onPress={goToFriendProfile}>
       <Card.Title
-        title={item.userName}
+        title={item._id.userName}
         style={styles.card}
-        key={item.userName}
-        left={(props) => <AvatarIcon />}
+        left={(props) => <AvatarIcon onlineStatus={item._id.status} />}
       />
     </Pressable>
   );

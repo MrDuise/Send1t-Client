@@ -10,35 +10,38 @@ import AppContext from '../../../components/AppContext';
 
 
 
+const sendFriendRequest = (friend) => {
+  console.log('sending friend request to: ' + friend._id.userName);
+
+}
+
 
 
 
 const FriendRequestButton = ({friend}) => {
-  if (friend.status === 'pending') {
+  if (friend.friendStatus === 'pending') {
     return (
       <Button
         mode="grey"
         style={styles.optionsButton}
         labelStyle={styles.optionsButtonLabel}
         icon="account-clock"
-        onPress={openEditProfile}
       >
         request sent
       </Button>
     );
-  } else if (friend.status === 'accepted') {
+  } else if (friend.friendStatus === 'accepted') {
     return (
       <Button
         mode="outlined"
         style={styles.optionsButton}
         labelStyle={styles.optionsButtonLabel}
         icon="account-check"
-        onPress={openEditProfile}
       >
         Friends
       </Button>
     );
-  } else if (friend.status === null) {
+  } else if (friend.friendStatus === null) {
     //this means that the user is not friends with the person. need to add a search feature to search for users
     return (
       <Button
@@ -46,7 +49,7 @@ const FriendRequestButton = ({friend}) => {
         style={styles.optionsButton}
         labelStyle={styles.optionsButtonLabel}
         icon="account-plus"
-        onPress={openEditProfile}
+        onPress={sendFriendRequest}
       >
         Add Friend
       </Button>
@@ -79,13 +82,13 @@ const FriendProfile = ({ navigation, route }) => {
         <View style={{ top: -60 }}>
           <AvatarIcon
             profilePic={{ uri: 'https://picsum.photos/200' }}
-            onlineStatus={route.params.friend.status}
+            onlineStatus={route.params.friend._id.status}
             size={120}
           />
         </View>
         <View style={styles.usernameHeader}>
           <Text style={styles.usernameText}>
-            {route.params.friend.firstName} {route.params.friend.lastName}
+            {route.params.friend._id.firstName} {route.params.friend._id.lastName}
           </Text>
         </View>
         <View style={styles.tagLine}>
@@ -94,7 +97,7 @@ const FriendProfile = ({ navigation, route }) => {
           </Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
-          {}
+        <FriendRequestButton friend={route.params.friend} />
           
         </View>
       </View>
