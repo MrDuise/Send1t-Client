@@ -4,12 +4,7 @@ import { Card, Title, Button } from 'react-native-paper';
 import {getFriendRequests} from '../../../infrastructure/backend/request';
 
 const FriendRequestsScreen = () => {
-  const [friendRequests, setFriendRequests] = useState([
-    { id: '1', name: 'Friend 1' },
-    { id: '2', name: 'Friend 2' },
-    { id: '3', name: 'Friend 3' },
-    // Add more friend requests here as needed
-  ]);
+  const [friendRequests, setFriendRequests] = useState([]);
 
   useEffect(() => {
     const fetchFriendRequests = async () => {
@@ -38,18 +33,18 @@ const FriendRequestsScreen = () => {
   const renderFriendRequest = ({ item }) => (
     <Card style={styles.card}>
       <Card.Content>
-        <Title>{item.name}</Title>
+        <Title>{item.userName}</Title>
         <View style={styles.buttonsContainer}>
           <Button
             mode="contained"
-            onPress={() => handleAccept(item.id)}
+            onPress={() => handleAccept(item._id)}
             style={styles.acceptButton}
           >
             Accept
           </Button>
           <Button
             mode="outlined"
-            onPress={() => handleDeny(item.id)}
+            onPress={() => handleDeny(item._id)}
             style={styles.denyButton}
           >
             Deny

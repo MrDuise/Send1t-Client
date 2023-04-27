@@ -76,7 +76,7 @@ const ConversationCard = ({ conversation = {}, seen = false, nav }) => {
         style={styles(read).card}
         title={headerTitle}
         subtitle={conversation.updatedAt}
-        left={(props) => <AvatarIcon />}
+        left={(props) => <AvatarIcon onlineStatus={true}/>}
         right={(props) => <Text {...props}>{displayMessage}</Text>}
       />
     </Pressable>

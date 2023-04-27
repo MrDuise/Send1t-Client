@@ -15,7 +15,7 @@ import { updateUser } from '../../../infrastructure/backend/request';
 import Logo from '../../../components/Logo';
 import AppContext from '../../../components/AppContext';
 
-const EditProfile = () => {
+const EditProfile = ({ navigation }) => {
   const myContext = useContext(AppContext);
   const [firstName, setFirstName] = useState(myContext.user.firstName);
   const [lastName, setLastName] = useState(myContext.user.lastName);

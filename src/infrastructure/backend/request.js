@@ -1,4 +1,7 @@
 /** This Page handles all the api requests, so they can easily be called else where */
+const testing = false;
+
+const url = testing === true ? 'http://10.0.2.2:8000'  : 'https://send1t-api.onrender.com';
 
 /*******************************************
  * CREATE***********
@@ -16,7 +19,7 @@
  */
 const register = async (userName, password, firstName, lastName, email) => {
   try {
-    const response = await fetch('https://send1t-api.onrender.com/v1/users/register/', {
+    const response = await fetch(`${url}/v1/users/register/`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -62,7 +65,7 @@ const register = async (userName, password, firstName, lastName, email) => {
 const makeNewConversation = async (participants, isGroup) => {
   try {
     const response = await fetch(
-      'https://send1t-api.onrender.com/v1/conversations/createConversation',
+      `${url}/v1/conversations/createConversation`,
       {
         method: 'POST',
         credentials: 'include',
@@ -92,7 +95,7 @@ const makeNewConversation = async (participants, isGroup) => {
 const sendFriendRequest = async (userName, friendName) => {
   try {
     const response = await fetch(
-      'http://localhost:8000/v1/users/sendFriendRequest',
+      `${url}/v1/users/sendFriendRequest`,
       {
         method: 'POST',
         credentials: 'include',
@@ -132,7 +135,7 @@ const sendFriendRequest = async (userName, friendName) => {
 const login = async (userName, password) => {
   try {
     const response = await fetch(
-      'https://send1t-api.onrender.com/v1/users/login/local',
+      `${url}/v1/users/login/local`,
       {
         method: 'POST',
         credentials: 'include',
@@ -167,7 +170,7 @@ const getStatus = () => {};
 const seachForUser = async (userName) => {
   try {
     const response = await fetch(
-      'http://10.0.2.2:8000/v1/users/searchForUser',
+      `${url}/v1/users/searchForUser`,
       {
         method: 'POST',
         credentials: 'include',
@@ -201,7 +204,7 @@ const seachForUser = async (userName) => {
 const getConversations = async (userNameValue) => {
   try {
     const response = await fetch(
-      'https://send1t-api.onrender.com/v1/conversations/getUserConversations',
+      `${url}/v1/conversations/getUserConversations`,
       {
         method: 'POST',
         credentials: 'include',
@@ -232,7 +235,7 @@ const getConversations = async (userNameValue) => {
 const getFriendRequests = async () => {
   try {
     const response = await fetch(
-      'http://10.0.2.2:8000/v1/users/getFriendRequests',
+      `${url}/v1/users/getFriendRequests`,
       {
         method: 'POST',
         credentials: 'include',
@@ -243,6 +246,7 @@ const getFriendRequests = async () => {
     );
     const friendRequests = await response.json();
     if (friendRequests.length !== 0) {
+      console.log("In friendRequest", friendRequests)
       return friendRequests;
     } else {
       return null;
@@ -262,7 +266,7 @@ const getFriendRequests = async () => {
 const getMessages = async (conversationId) => {
   try {
     const response = await fetch(
-      'https://send1t-api.onrender.com/v1/conversations/getMessageLog',
+      `${url}/v1/conversations/getMessageLog`,
       {
         method: 'POST',
         credentials: 'include',
@@ -299,7 +303,7 @@ const getMessages = async (conversationId) => {
  */
 const getFriends = async () => {
   try {
-    const response = await fetch('https://send1t-api.onrender.com/v1/users/contacts', {
+    const response = await fetch(`${url}/v1/users/contacts`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -327,7 +331,7 @@ const getFriends = async () => {
 const acceptFriendRequest = async (userName, friendName) => {
   try {
     const response = await fetch(
-      'http://10.0.2.2:8000/v1/users/acceptFriendRequest',
+      `${url}/v1/users/acceptFriendRequest`,
       {
         method: 'POST',
         credentials: 'include',
@@ -356,7 +360,7 @@ const acceptFriendRequest = async (userName, friendName) => {
 const declineFriendRequest = async (userName, friendName) => {
   try {
     const response = await fetch(
-      'http://10.0.2.2:8000/v1/users/declineFriendRequest',
+      `${url}/v1/users/declineFriendRequest`,
       {
         method: 'POST',
         credentials: 'include',
@@ -394,7 +398,7 @@ const declineFriendRequest = async (userName, friendName) => {
 const updateStatus = async (status) => {
   try {
     const response = await fetch(
-      'http://10.0.2.2:8000/v1/users/changeUserStatus',
+      `${url}/v1/users/changeUserStatus`,
       {
         method: 'POST',
         credentials: 'include',
@@ -420,7 +424,7 @@ const updateStatus = async (status) => {
 
 const updateUser = async (firstName, lastName, email, tagLine) => {
   try {
-    const response = await fetch('http://10.0.2.2:8000/v1/users/updateUser', {
+    const response = await fetch(`${url}/v1/users/updateUser`, {
       method: 'PATCH',
       credentials: 'include',
       headers: {
@@ -456,7 +460,7 @@ const updateUser = async (firstName, lastName, email, tagLine) => {
  */
 const logOut = async () => {
   try {
-    const response = await fetch(`https://send1t-api.onrender.com/v1/users/logout`, {
+    const response = await fetch(`${url}/v1/users/logout`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

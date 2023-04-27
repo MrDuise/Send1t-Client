@@ -59,8 +59,7 @@ const ProfilePage = ({ navigation }) => {
         </View>
         <View style={styles.tagLine}>
           <Text style={styles.tagLineText}>
-            Software Developer at XYZ Corp. I love coding and learning new
-            things!
+            {myContext.user.tagLine}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
