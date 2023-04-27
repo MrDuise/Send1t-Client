@@ -4,21 +4,11 @@ import { Avatar, Badge, Button, Appbar } from 'react-native-paper';
 import AvatarIcon from '../../../components/Avatar';
 import AppContext from '../../../components/AppContext';
 
-
-
-
-
-
-
 const sendFriendRequest = (friend) => {
   console.log('sending friend request to: ' + friend._id.userName);
+};
 
-}
-
-
-
-
-const FriendRequestButton = ({friend}) => {
+const FriendRequestButton = ({ friend }) => {
   if (friend.friendStatus === 'pending') {
     return (
       <Button
@@ -57,7 +47,6 @@ const FriendRequestButton = ({friend}) => {
   }
 };
 
-
 /**
  * This screen displays the users profile information
  * This page is accessed by clicking on the profile icon in the bottom navigation bar
@@ -69,7 +58,6 @@ const FriendProfile = ({ navigation, route }) => {
   const myContext = useContext(AppContext);
   console.log(route.params.friend);
 
- 
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: 20, paddingTop: 30 }}>
       <View style={styles.container}>
@@ -88,17 +76,15 @@ const FriendProfile = ({ navigation, route }) => {
         </View>
         <View style={styles.usernameHeader}>
           <Text style={styles.usernameText}>
-            {route.params.friend._id.firstName} {route.params.friend._id.lastName}
+            {route.params.friend._id.firstName}{' '}
+            {route.params.friend._id.lastName}
           </Text>
         </View>
         <View style={styles.tagLine}>
-          <Text style={styles.tagLineText}>
-          {route.params.friend.tagLine}
-          </Text>
+          <Text style={styles.tagLineText}>{route.params.friend.tagLine}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
-        <FriendRequestButton friend={route.params.friend} />
-          
+          <FriendRequestButton friend={route.params.friend} />
         </View>
       </View>
     </SafeAreaView>
