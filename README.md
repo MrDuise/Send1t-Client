@@ -22,7 +22,7 @@ This will get it running on your localhost, allowing access through Postman or s
     
 ## Demo
 
-<img src="send1t.gif" width="360" height="740"/>
+<img src="final demo.gif" width="360" height="740"/>
 
 
 
